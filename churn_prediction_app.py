@@ -234,12 +234,12 @@ def render_content(tab):
         fig1.update_layout(
             yaxis_title='',
             xaxis_title='',
-            title={'text': 'Count of churned and non churned customers', 'x': 0.5, 'xanchor': 'center'}
+            title={'text': 'Count of churned and non churned customers (Target Variable)', 'x': 0.5, 'xanchor': 'center'}
         )
 
         # Layout for the boxplot chart
         boxplot_layout = html.Div([
-            html.H3("Feature Distribution Analysis"),
+            html.H3("Numerical Variables", style=styles['h2_header']),
             dcc.Dropdown(
                 id='numerical-dropdown',
                 options= [{'label': col, 'value': col} for col in sorted(numerical_cols)],
@@ -260,25 +260,25 @@ def render_content(tab):
         
         # Bar chart for comparing other variables against the is_churned class
         bar_chart_layout = html.Div([
-            html.H3("Comparison of Other Variables with 'is_churned' Class"),
+            html.H3("Categorical Variables", style=styles['h2_header']),
             dcc.Dropdown(
                 id='comparison-dropdown',
                 options=[{'label': col, 'value': col} for col in sorted(categorical_cols) if col not in ['is_churned_label', 'is_churned', 'customer_id']],
                 value= [col for col in categorical_cols if col not in ['is_churned_label', 'is_churned', 'customer_id']][0]  # set the default value to the first column (excluding 'is_churned')
             ),
-            dcc.Graph(id='bar-chart'),
+            html.Div([
+                html.Div([dcc.Graph(figure=fig1)], style=styles['graph_container']),  # Graph for churn count
+                html.Div([dcc.Graph(id='bar-chart')], style=styles['graph_container'])  # Graph for categorical comparison
+            ], style={'display': 'flex'})  # This ensures the two graphs are side by side
         ])
 
         return html.Div([
-            html.Div([dcc.Graph(figure=fig1)], style=styles['graph_container']),
             boxplot_layout,
             bar_chart_layout
         ])
 
     elif tab == 'tab-2':
         
-        stats_df = calculate_descriptive_statistics(df, numerical_cols)
-
         model_options = [
             {'label': 'KNN', 'value': 'KNN.pkl'},
             {'label': 'KNN with SMOTE', 'value': 'KNN_with_SMOTE.pkl'},

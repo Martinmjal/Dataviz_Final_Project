@@ -5,3 +5,4 @@ format: jb-book
 root: intro
 chapters:
 - file: churn_prediction_EDA
+- file: churn_prediction_model_training
