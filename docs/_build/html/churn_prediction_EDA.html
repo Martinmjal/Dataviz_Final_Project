@@ -65,6 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'churn_prediction_EDA';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Models Training and Comparison" href="churn_prediction_model_training.html" />
     <link rel="prev" title="Visualización de Datos - Proyecto Final" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -157,7 +158,8 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Churn Prediction EDA</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Churn Prediction EDA</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="churn_prediction_model_training.html">Models Training and Comparison</a></li>
 </ul>
 
     </div>
@@ -351,22 +353,22 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad">Reducción de dimensionalidad</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">variables categóricas</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">verificando supuestos de la prueba chi cuadrado</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicando-prueba-chi-cuadrado">aplicando prueba chi cuadrado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad"><strong>Reducción de dimensionalidad</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas"><strong>Variables Categóricas</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado"><strong>Verificando supuestos de la prueba chi cuadrado</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado"><strong>Aplicar prueba chi cuadrado</strong></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">variables numéricas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-nulos">valores nulos</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminando-multicolinealidad-con-variance-inflation-factor-vif">Eliminando multicolinealidad con Variance Inflation Factor (VIF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas"><strong>Variables numéricas</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-faltantes"><strong>Datos faltantes</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif"><strong>Eliminar multicolinealidad con Variance Inflation Factor (VIF)</strong></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo"><strong>Análisis con variable objetivo</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned"><strong>Variables numéricas vs is_churned</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned"><strong>Variables categóricas vs is_churned</strong></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">variables numericas vs is_churned</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">variables categoricas vs is_churned</a></li>
 </ul>
             </nav>
         </div>
@@ -379,54 +381,64 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="churn-prediction-eda">
-<h1>Churn Prediction EDA<a class="headerlink" href="#churn-prediction-eda" title="Permalink to this heading">#</a></h1>
+<h1><strong>Churn Prediction EDA</strong><a class="headerlink" href="#churn-prediction-eda" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Importar las librerías necesarias</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">chi2_contingency</span>
 <span class="kn">from</span> <span class="nn">statsmodels.stats.outliers_influence</span> <span class="kn">import</span> <span class="n">variance_inflation_factor</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Importar y organizar dataset</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># se importa dataset y se eliminan columnas sin datos</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;churn_prediction_features.csv&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;KVI_gmv_percent&#39;</span><span class="p">,</span> <span class="s1">&#39;FORE_gmv_percent&#39;</span><span class="p">,</span> <span class="s1">&#39;LONG_gmv_percent&#39;</span><span class="p">,</span> <span class="s1">&#39;NO_CLASS_gmv_percent&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Importar dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;churn_prediction_features.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 5293 entries, 0 to 5292
+Columns: 112 entries, order_count_3m to customer_id
+dtypes: float64(98), int64(14)
+memory usage: 4.5 MB
 </pre></div>
 </div>
 </div>
 </div>
-<p>determinando cuáles son columnas numéricas y categóricas</p>
+<p>Determinar cuáles columnas son numéricas o categóricas</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># categorical columns: the ones that start with &#39;sub_categoria_&#39; or &#39;warehouse_&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Categóricas, teniendo en cuenta que las categóricas empiezan con &#39;sub_categoria_&#39; or &#39;warehouse_&#39;</span>
 <span class="n">categorical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;sub_categoria_&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;warehouse_&#39;</span><span class="p">)]</span>
-<span class="c1"># manually including more categorical columns to the list</span>
+<span class="c1"># Incluir manualmente más columnas categóricas</span>
 <span class="n">categorical_cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;customer_id&#39;</span><span class="p">,</span> <span class="s1">&#39;has_churned_before&#39;</span><span class="p">,</span> <span class="s1">&#39;is_churned&#39;</span><span class="p">])</span>
-
-<span class="c1"># numerical columns</span>
+<span class="c1"># Numéricas</span>
 <span class="n">numerical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">categorical_cols</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="reduccion-de-dimensionalidad">
-<h2>Reducción de dimensionalidad<a class="headerlink" href="#reduccion-de-dimensionalidad" title="Permalink to this heading">#</a></h2>
+<h2><strong>Reducción de dimensionalidad</strong><a class="headerlink" href="#reduccion-de-dimensionalidad" title="Permalink to this heading">#</a></h2>
+<p>Se hará una reducción de dimensionalidad con base en la prueba chi-cuadrado. El objetivo principal es identificar y retener solo aquellas variables categóricas que son estadísticamente independientes entre sí.</p>
+<p>Esto se hace utilizando una prueba chi-cuadrado, donde se considera que dos variables son independientes si el valor p de la prueba es mayor que 0.05 (umbral común para significancia estadística).</p>
 <section id="variables-categoricas">
-<h3>variables categóricas<a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h3>
-<p>se verifica entonces la dimensión del dataframe de variables categóricas</p>
+<h3><strong>Variables Categóricas</strong><a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h3>
+<p>Verificar la dimensión del dataframe de variables categóricas</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_categoricals</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_cols</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;customer_id&#39;</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
 <span class="n">df_categoricals</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
@@ -437,21 +449,22 @@ document.write(`
 </div>
 </div>
 </div>
-<p>se tienen 83 columnas categóricas, se procede a hacer pruebas de independencia de variables categóricas</p>
+<p>En total hay 83 columnas categóricas. Se realizarán pruebas de independecia en estas 83 columnas categóricas.</p>
+</section>
 <section id="verificando-supuestos-de-la-prueba-chi-cuadrado">
-<h4>verificando supuestos de la prueba chi cuadrado<a class="headerlink" href="#verificando-supuestos-de-la-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h4>
-<p>uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica, por lo cuál procede a verificarse este supuesto</p>
+<h3><strong>Verificando supuestos de la prueba chi cuadrado</strong><a class="headerlink" href="#verificando-supuestos-de-la-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h3>
+<p>Uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica.  Se verificará que cada variable categórica cumpla con este supuesto.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an empty dataframe to store value counts</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los conteos de valores</span>
 <span class="n">value_counts_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;negative_class&#39;</span><span class="p">,</span> <span class="s1">&#39;positive_class&#39;</span><span class="p">])</span>
 
-<span class="c1"># Loop through each categorical column and get value counts</span>
+<span class="c1"># Iterar a través de cada columna categórica y obtener los conteos de valores</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df_categoricals</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">value_counts</span> <span class="o">=</span> <span class="n">df_categoricals</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
     <span class="n">value_counts_df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">value_counts</span>
 
-<span class="c1"># Display the resulting dataframe</span>
+<span class="c1"># Mostrar el DataFrame resultante</span>
 <span class="n">value_counts_df</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 </div>
@@ -540,7 +553,7 @@ document.write(`
 <p>83 rows × 2 columns</p>
 </div></div></div>
 </div>
-<p>categorías con menos de 5 registros en la clase negativa:</p>
+<p>Determinar categorías con menos de 5 registros en la clase negativa:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">value_counts_df</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">value_counts_df</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="s1">&#39;negative_class&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">]</span>
@@ -575,7 +588,7 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<p>categorías con menos de 5 registros en la clase positiva:</p>
+<p>Determinar categorías con menos de 5 registros en la clase positiva:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">value_counts_df</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">value_counts_df</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="s1">&#39;positive_class&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">]</span>
@@ -615,7 +628,7 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<p>por lo cuál proceden a excluírse estas categorías de la prueba</p>
+<p>En la clase negativa no resultó ninguna categoría, pero en la positiva se tiene “sub_categoria_Detergentes y jabones”. Se procederá a excluir esta categoría de la prueba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_categoricals</span> <span class="o">=</span> <span class="n">df_categoricals</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Detergentes y jabones&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -623,36 +636,352 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="aplicando-prueba-chi-cuadrado">
-<h4>aplicando prueba chi cuadrado<a class="headerlink" href="#aplicando-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h4>
-<p>dado que se tienen 83 columnas categóricas, se procede a hacer pruebas chi cuadrado entre todas las posibles combinaciones de columnas categóricas, y se guarda este resultado en un dataframe</p>
+<section id="aplicar-prueba-chi-cuadrado">
+<h4><strong>Aplicar prueba chi cuadrado</strong><a class="headerlink" href="#aplicar-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h4>
+<p>Se procede a hacer pruebas chi cuadrado entre todas las posibles combinaciones de columnas categóricas que quedaron, y se guarda este resultado en un nuevo dataframe.</p>
+<p>Esta prueba es útil para evaluar la independencia estadística entre pares de variables categóricas en un conjunto de datos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an empty dataframe to store p-values</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
 <span class="n">p_values_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">df_categoricals</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df_categoricals</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-<span class="c1"># Loop through each pair of categorical columns and perform chi-squared test</span>
+<span class="c1"># Iterar a través de cada par de columnas categóricas para realizar la prueba chi-cuadrado</span>
 <span class="k">for</span> <span class="n">col1</span> <span class="ow">in</span> <span class="n">df_categoricals</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">col2</span> <span class="ow">in</span> <span class="n">df_categoricals</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+         <span class="c1"># Crear una tabla de contingencia entre las dos columnas</span>
         <span class="n">contingency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df_categoricals</span><span class="p">[</span><span class="n">col1</span><span class="p">],</span> <span class="n">df_categoricals</span><span class="p">[</span><span class="n">col2</span><span class="p">])</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency_table</span><span class="p">)</span>
         <span class="n">p_values_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_value</span>
 
-<span class="c1"># Display the resulting p-values dataframe</span>
+<span class="c1"># Mostrar el DataFrame resultante con los valores p</span>
 <span class="n">p_values_df</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sub_categoria_Accesorios</th>
+      <th>sub_categoria_Acondicionador</th>
+      <th>sub_categoria_Ambientadores</th>
+      <th>sub_categoria_Analgésicos</th>
+      <th>sub_categoria_Antibióticos y analgésicos</th>
+      <th>sub_categoria_Anticonceptivos</th>
+      <th>sub_categoria_Antidiarreicos y sueros</th>
+      <th>sub_categoria_Antimicótico - Anti hongos</th>
+      <th>sub_categoria_Antimicótico íntimo</th>
+      <th>sub_categoria_Antipruriginoso - Anti picazon</th>
+      <th>...</th>
+      <th>sub_categoria_Tos</th>
+      <th>sub_categoria_Tratamiento cicatrices y heridas</th>
+      <th>sub_categoria_Uñas</th>
+      <th>sub_categoria_Vendas</th>
+      <th>sub_categoria_Vitaminas</th>
+      <th>sub_categoria_sin info</th>
+      <th>warehouse_Barranquilla</th>
+      <th>warehouse_Bogota</th>
+      <th>has_churned_before</th>
+      <th>is_churned</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>sub_categoria_Accesorios</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000364</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000014</td>
+      <td>0.000024</td>
+      <td>0.000622</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>sub_categoria_Acondicionador</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000001</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.168168</td>
+      <td>0.165402</td>
+      <td>0.000207</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>sub_categoria_Ambientadores</th>
+      <td>0.0</td>
+      <td>0.000001</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.024807</td>
+      <td>0.743419</td>
+      <td>0.000111</td>
+      <td>0.000042</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>1.0</td>
+      <td>0.101193</td>
+      <td>0.017297</td>
+      <td>0.0</td>
+      <td>0.021555</td>
+      <td>0.000016</td>
+      <td>0.959184</td>
+      <td>0.995062</td>
+      <td>0.627648</td>
+      <td>0.087468</td>
+    </tr>
+    <tr>
+      <th>sub_categoria_Analgésicos</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000418</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>sub_categoria_Antibióticos y analgésicos</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000021</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000011</td>
+      <td>0.000012</td>
+      <td>0.025377</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>sub_categoria_sin info</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000016</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>warehouse_Barranquilla</th>
+      <td>0.000014</td>
+      <td>0.168168</td>
+      <td>0.959184</td>
+      <td>0.0</td>
+      <td>0.000011</td>
+      <td>0.078546</td>
+      <td>0.003716</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.000217</td>
+      <td>0.0</td>
+      <td>0.002479</td>
+      <td>0.000024</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>warehouse_Bogota</th>
+      <td>0.000024</td>
+      <td>0.165402</td>
+      <td>0.995062</td>
+      <td>0.0</td>
+      <td>0.000012</td>
+      <td>0.155511</td>
+      <td>0.007535</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.000442</td>
+      <td>0.0</td>
+      <td>0.000863</td>
+      <td>0.000117</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>has_churned_before</th>
+      <td>0.000622</td>
+      <td>0.000207</td>
+      <td>0.627648</td>
+      <td>0.000418</td>
+      <td>0.025377</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.002244</td>
+      <td>0.032738</td>
+      <td>...</td>
+      <td>0.000916</td>
+      <td>0.000051</td>
+      <td>0.0</td>
+      <td>0.016002</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.001787</td>
+    </tr>
+    <tr>
+      <th>is_churned</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.087468</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.001787</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>82 rows × 82 columns</p>
+</div></div></div>
 </div>
-<p>se empieza a descartar. Iniciando por todas aquellas que son dependientes a warehouse_Bogota (escogida aleatoriamente entre todas las variables)</p>
+<p><strong>Proceso de descarte</strong></p>
+<p>Ahora incia un proceso de selección de variables categóricas basado en la independencia estadística. Se empienzan a descartar todas las que son dependientes.</p>
+<p>Se incia el proceso con todas aquellas que son dependientes a warehouse_Bogota (escogida aleatoriamente entre todas las variables)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">independent_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p_values_df</span><span class="p">[</span><span class="n">p_values_df</span><span class="p">[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear una lista de columnas independientes basada en los valores p con respecto a &#39;warehouse_Bogota&#39;</span>
+<span class="n">independent_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p_values_df</span><span class="p">[</span><span class="n">p_values_df</span><span class="p">[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="c1"># Añadir &#39;warehouse_Bogota&#39; a la lista de columnas independientes</span>
 <span class="n">independent_columns</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">])</span>
-
+<span class="c1"># Crear un nuevo DataFrame que solo contenga las columnas independientes identificadas</span>
 <span class="n">df_independent_variables</span> <span class="o">=</span> <span class="n">df_categoricals</span><span class="p">[</span><span class="n">independent_columns</span><span class="p">]</span>
-
+<span class="c1"># Mostrar el DataFrame resultante con las variables independientes</span>
 <span class="n">df_independent_variables</span>
 </pre></div>
 </div>
@@ -861,20 +1190,22 @@ document.write(`
 <p>5293 rows × 12 columns</p>
 </div></div></div>
 </div>
-<p>por lo cuál, todas las que quedan son independientes a warehouse_Bogota, se procede a tomar otra columna aleatoria para verificar su independencia con todas las otras y seguir eliminando</p>
+<p>El resultado evidencia que 12 columnas son independientes a la columna warehouse_Bogota. Se procederá a utilizar otra columna aleatoria para verificar nuevamente independecia y descartar las dependientes.</p>
+<p>Para este proceso se repite la prueba de chi-cuadrado</p>
+<p><strong>Repetir prueba chi-cuadrado</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an empty dataframe to store p-values</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
 <span class="n">p_values_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-<span class="c1"># Loop through each pair of categorical columns and perform chi-squared test</span>
+<span class="c1"># Recorrer cada par de columnas categóricas y realizar la prueba de chi-cuadrado</span>
 <span class="k">for</span> <span class="n">col1</span> <span class="ow">in</span> <span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">col2</span> <span class="ow">in</span> <span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
         <span class="n">contingency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df_independent_variables</span><span class="p">[</span><span class="n">col1</span><span class="p">],</span> <span class="n">df_independent_variables</span><span class="p">[</span><span class="n">col2</span><span class="p">])</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency_table</span><span class="p">)</span>
         <span class="n">p_values_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_value</span>
 
-<span class="c1"># Display the resulting p-values dataframe</span>
+<span class="c1"># Mostrar el DataFrame resultante con los valores p</span>
 <span class="n">p_values_df</span>
 </pre></div>
 </div>
@@ -1097,25 +1428,144 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<p>Ahora, se toma la variable ‘sub_categoria_Ambientadores’, se eliminan las que son dependientes a esta y se repite el proceso hasta que todas las variables categóricas restantes, sean independientes</p>
+<p><strong>Repetir proceso de descarte</strong></p>
+<p>Después de repetir la prueba de chi-cuadrado se continúa nuevamente con el proceso de descarte. Se repetirá el proceso hasta que las variables sean independientes.</p>
+<p>En esta ocasión se selecciona aleatoriamente la variable ‘sub_categoria_Ambientadores’. Se eliminarán las variables dependientes a esta.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">independent_columns</span> <span class="o">=</span>  <span class="nb">list</span><span class="p">(</span><span class="n">p_values_df</span><span class="p">[</span><span class="n">p_values_df</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear una lista de columnas independientes basadas en un valor p umbral</span>
+<span class="n">independent_columns</span> <span class="o">=</span>  <span class="nb">list</span><span class="p">(</span><span class="n">p_values_df</span><span class="p">[</span><span class="n">p_values_df</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="c1"># Agregar la columna &#39;sub_categoria_Ambientadores&#39; a la lista de columnas independientes</span>
 <span class="n">independent_columns</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">])</span>
-
+<span class="c1"># Filtrar el DataFrame original df_independent_variables para incluir solo las columnas independientes</span>
 <span class="n">df_independent_variables</span> <span class="o">=</span> <span class="n">df_independent_variables</span><span class="p">[</span><span class="n">independent_columns</span><span class="p">]</span>
+<span class="c1"># Mostrar el DataFrame resultante con las variables independientes</span>
+<span class="n">df_independent_variables</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="c1"># Create an empty dataframe to store p-values</span>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sub_categoria_Complementos y vitaminas</th>
+      <th>sub_categoria_Productos para rehabilitación</th>
+      <th>warehouse_Bogota</th>
+      <th>sub_categoria_Ambientadores</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>5288</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5289</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5290</th>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5291</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5292</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5293 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Repetir prueba </span>
+<span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
 <span class="n">p_values_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-<span class="c1"># Loop through each pair of categorical columns and perform chi-squared test</span>
+<span class="c1"># Recorrer cada par de columnas categóricas y realizar la prueba de chi-cuadrado</span>
 <span class="k">for</span> <span class="n">col1</span> <span class="ow">in</span> <span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">col2</span> <span class="ow">in</span> <span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
         <span class="n">contingency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df_independent_variables</span><span class="p">[</span><span class="n">col1</span><span class="p">],</span> <span class="n">df_independent_variables</span><span class="p">[</span><span class="n">col2</span><span class="p">])</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency_table</span><span class="p">)</span>
         <span class="n">p_values_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_value</span>
 
-<span class="c1"># Display the resulting p-values dataframe</span>
+<span class="c1"># Mostrar el DataFrame resultante con los valores p</span>
 <span class="n">p_values_df</span>
 </pre></div>
 </div>
@@ -1178,24 +1628,130 @@ document.write(`
 </table>
 </div></div></div>
 </div>
+<p>Después de reptir el proceso, quedan 4 variables. Se procederá a repetir.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">independent_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p_values_df</span><span class="p">[</span><span class="n">p_values_df</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear una lista de columnas independientes basadas en un valor p umbral</span>
+<span class="n">independent_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p_values_df</span><span class="p">[</span><span class="n">p_values_df</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="c1"># Agregar la columna &#39;sub_categoria_Complementos y vitaminas&#39; a la lista de columnas independientes</span>
 <span class="n">independent_columns</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">])</span>
-
+<span class="c1"># Filtrar el DataFrame original df_independent_variables para incluir solo las columnas independientes</span>
 <span class="n">df_independent_variables</span> <span class="o">=</span> <span class="n">df_independent_variables</span><span class="p">[</span><span class="n">independent_columns</span><span class="p">]</span>
+<span class="c1"># Mostrar el DataFrame resultante con las variables independientes</span>
+<span class="n">df_independent_variables</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="c1"># Create an empty dataframe to store p-values</span>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>warehouse_Bogota</th>
+      <th>sub_categoria_Ambientadores</th>
+      <th>sub_categoria_Complementos y vitaminas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>5288</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5289</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5290</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>5291</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>5292</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5293 rows × 3 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Repetir prueba</span>
+<span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
 <span class="n">p_values_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-<span class="c1"># Loop through each pair of categorical columns and perform chi-squared test</span>
+<span class="c1"># Recorrer cada par de columnas categóricas y realizar la prueba de chi-cuadrado</span>
 <span class="k">for</span> <span class="n">col1</span> <span class="ow">in</span> <span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">col2</span> <span class="ow">in</span> <span class="n">df_independent_variables</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
         <span class="n">contingency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df_independent_variables</span><span class="p">[</span><span class="n">col1</span><span class="p">],</span> <span class="n">df_independent_variables</span><span class="p">[</span><span class="n">col2</span><span class="p">])</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency_table</span><span class="p">)</span>
         <span class="n">p_values_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_value</span>
 
-<span class="c1"># Display the resulting p-values dataframe</span>
+<span class="c1"># Mostrar el DataFrame resultante con los valores p</span>
 <span class="n">p_values_df</span>
 </pre></div>
 </div>
@@ -1247,10 +1803,11 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<p>dado que las tres variables restantes son independientes, se procede a utilizarlas para el modelo</p>
+<p>En este ultimo caso las tres variables restantes son indpendientes. Ahora se procede a utilizar estas 3 variables para el modelo.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_categoricals</span> <span class="o">=</span> <span class="n">df_categoricals</span><span class="p">[[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filtrar las 3 columnas independientes en el dataframe original.</span>
+<span class="n">df_categoricals</span> <span class="o">=</span> <span class="n">df_categoricals</span><span class="p">[[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -1258,8 +1815,8 @@ document.write(`
 </section>
 </section>
 <section id="variables-numericas">
-<h3>variables numéricas<a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h3>
-<p>examinando correlación</p>
+<h3><strong>Variables numéricas</strong><a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h3>
+<p>Para las variables numéricas se realiza una matrix de correlación</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">numerical_cols</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
@@ -1274,16 +1831,15 @@ document.write(`
 <img alt="_images/eba9214d599d97b68f34a381fbfc6f6e1c96eae993cb59889a5b803e7278a8b6.png" src="_images/eba9214d599d97b68f34a381fbfc6f6e1c96eae993cb59889a5b803e7278a8b6.png" />
 </div>
 </div>
-<p>se evidencian variables con correlaciones muy altas, pero estas se proceden a eliminar con el VIF (Variance Inflation Factor)</p>
+<p>Se evidencia que existen variables con correlaciones altas. Estas se eliminarán con el Variance Inflation Factor.</p>
+<p>Antes de este proceso, se deben revisar los datos faltantes.</p>
 </section>
-<section id="valores-nulos">
-<h3>valores nulos<a class="headerlink" href="#valores-nulos" title="Permalink to this heading">#</a></h3>
-<p>se verifica antes de calcular el VIF, que no hayan valores nulos.</p>
+<section id="datos-faltantes">
+<h3><strong>Datos faltantes</strong><a class="headerlink" href="#datos-faltantes" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># se toma el dataset con las variables numéricas, más las categóricas independientes, más la variable objetivo</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se filtran las columnas con las variables numericas, las variables indpendientes y la variable objetivo</span>
 <span class="n">df_reduction</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">numerical_cols</span> <span class="o">+</span> <span class="n">independent_columns</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
 <span class="n">df_reduction</span>
 </pre></div>
 </div>
@@ -1600,15 +2156,15 @@ document.write(`
 <p>5293 rows × 31 columns</p>
 </div></div></div>
 </div>
+<p>Se evidencia la presencia de valores faltantes en el dataframe. Se procederá a visualizarlos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="c1"># Calculate the percentage of null values</span>
+<span class="c1"># Calcular el porcentaje de valores nulos</span>
 <span class="n">null_percent</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
-
-<span class="c1"># Plotting</span>
+<span class="c1"># Visualizar</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">null_percent</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Percentage of Null Values&#39;</span><span class="p">)</span>
@@ -1622,18 +2178,24 @@ document.write(`
 <img alt="_images/5f4977d97a64cecba3ff2d01fe43a15fafea2dc44dfe1f6218d25ff5feed6a4d.png" src="_images/5f4977d97a64cecba3ff2d01fe43a15fafea2dc44dfe1f6218d25ff5feed6a4d.png" />
 </div>
 </div>
-<p>En este caso se eliminan columnas con un 40% o más de valores nulos, y al resto se le imputa la mediana</p>
+<p>Se evidencia que hay varias columnas con más del 40% de valores nulos. Se procede a eliminar estas columnas e imputar los datos faltantaes en las demás.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove columns where 40% or more data is missing</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se eliminan columnas con 40% o más de datos faltantes</span>
 <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_reduction</span><span class="p">)</span>
 <span class="n">df_reduction</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">thresh</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># calculate the median per column</span>
-<span class="n">medians</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="c1"># imputando datos con IterativeImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_iterative_imputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">IterativeImputer</span>
 
-<span class="c1"># Fill missing values with the median of their respective columns</span>
-<span class="n">df_reduction</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">medians</span><span class="p">)</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">IterativeImputer</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">imputed_data</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_reduction</span><span class="p">)</span>
+
+<span class="n">imputed_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">imputed_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df_reduction</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="n">df_reduction</span> <span class="o">=</span> <span class="n">imputed_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">df_reduction</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
@@ -1670,8 +2232,9 @@ dtype: int64
 </div>
 </div>
 </div>
-<section id="eliminando-multicolinealidad-con-variance-inflation-factor-vif">
-<h4>Eliminando multicolinealidad con Variance Inflation Factor (VIF)<a class="headerlink" href="#eliminando-multicolinealidad-con-variance-inflation-factor-vif" title="Permalink to this heading">#</a></h4>
+</section>
+<section id="eliminar-multicolinealidad-con-variance-inflation-factor-vif">
+<h3><strong>Eliminar multicolinealidad con Variance Inflation Factor (VIF)</strong><a class="headerlink" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif" title="Permalink to this heading">#</a></h3>
 <p>Recordemos que:</p>
 <ul class="simple">
 <li><p>Un VIF ≥ 5 indica alta multicolinealidad entre la correspondiente variable independiente y las demás variables.</p></li>
@@ -1684,89 +2247,91 @@ dtype: int64
 <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;Variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">columns</span>
 <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;VIF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">variance_inflation_factor</span><span class="p">(</span><span class="n">df_reduction</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">df_reduction</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 
-<span class="c1"># Display the result</span>
+<span class="c1"># Mostrar los resultados</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">vif_data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                  Variable        VIF
-0                           order_count_3m   8.670089
-1                     order_count_historic   7.090255
-2                          distinct_sku_3m  42.717588
-3                    distinct_sku_historic  32.538563
-4                                   gmv_3m   9.101782
-5                             gmv_historic   7.411545
-6                   unique_vendors_last_3m  40.458666
-7                  unique_vendors_historic  53.781693
-8                                   AOV_3m  12.826873
-9                             AOV_historic  10.791160
-10                          antiquity_days   9.168307
-11                         visits_count_3m   3.984999
-12                         canceled_orders   1.085857
-13                         tickets_finales   1.116103
-14                        mean_order_lapse   1.865942
-15                      new_skus_within_3m  15.424987
-16                   orders_count_delta_1m   1.414609
-17                            gmv_delta_1m   1.004616
-18                  distinct_skus_delta_1m   1.322880
-19                   orders_count_delta_2m   1.609353
-20                            gmv_delta_2m   1.004090
-21                  distinct_skus_delta_2m   1.462738
-22                        warehouse_Bogota   2.257478
-23             sub_categoria_Ambientadores   1.036767
-24  sub_categoria_Complementos y vitaminas   1.210918
+0                           order_count_3m   8.689462
+1                     order_count_historic   7.071149
+2                          distinct_sku_3m  43.065298
+3                    distinct_sku_historic  32.620615
+4                                   gmv_3m   9.101740
+5                             gmv_historic   7.413111
+6                   unique_vendors_last_3m  40.503112
+7                  unique_vendors_historic  54.064771
+8                                   AOV_3m  12.851760
+9                             AOV_historic  10.828574
+10                          antiquity_days   8.954980
+11                         visits_count_3m   3.974091
+12                         canceled_orders   1.086600
+13                         tickets_finales   1.116142
+14                        mean_order_lapse   1.937464
+15                      new_skus_within_3m  15.590733
+16                   orders_count_delta_1m   1.556624
+17                            gmv_delta_1m   1.004878
+18                  distinct_skus_delta_1m   1.394153
+19                   orders_count_delta_2m   1.797562
+20                            gmv_delta_2m   1.004484
+21                  distinct_skus_delta_2m   1.574238
+22                        warehouse_Bogota   2.457776
+23             sub_categoria_Ambientadores   1.036683
+24  sub_categoria_Complementos y vitaminas   1.211284
 </pre></div>
 </div>
 </div>
 </div>
-<p>se eliminan las columnas con un VIF mayor que 5, eliminando la de mayor VIF en cada iteración</p>
+<p>En este caso se eliminan las columnas con un VIF mayor que 5, eliminando la de mayor VIF en cada iteración.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assuming df_reduction is your initial DataFrame</span>
-<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="c1"># Calculating VIF for each variable</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="c1"># Calcular el Factor de Inflación de la Varianza (VIF) para cada variable</span>
     <span class="n">vif_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;Variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">columns</span>
     <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;VIF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">variance_inflation_factor</span><span class="p">(</span><span class="n">df_reduction</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">df_reduction</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 
-    <span class="c1"># Check if the max VIF is above the threshold (5)</span>
+    <span class="c1"># Comprobar si el VIF máximo está por encima del umbral (5)</span>
     <span class="n">max_vif</span> <span class="o">=</span> <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;VIF&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">max_vif</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
         <span class="k">break</span>
 
-    <span class="c1"># Identify the variable/column with the highest VIF</span>
+    <span class="c1"># Identificar la variable/columna con el VIF más alto</span>
     <span class="n">max_vif_variable</span> <span class="o">=</span> <span class="n">vif_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;VIF&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">variable_name</span> <span class="o">=</span> <span class="n">max_vif_variable</span><span class="p">[</span><span class="s2">&quot;Variable&quot;</span><span class="p">]</span>
 
-    <span class="c1"># Print the variable being dropped and its VIF</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dropping &#39;</span><span class="si">{</span><span class="n">variable_name</span><span class="si">}</span><span class="s2">&#39; with VIF: </span><span class="si">{</span><span class="n">max_vif</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Imprimir la variable que se va a eliminar y su VIF</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Eliminando &#39;</span><span class="si">{</span><span class="n">variable_name</span><span class="si">}</span><span class="s2">&#39; con VIF: </span><span class="si">{</span><span class="n">max_vif</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Drop the variable/column from the DataFrame</span>
+    <span class="c1"># Eliminar la variable/columna del DataFrame</span>
     <span class="n">df_reduction</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">variable_name</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dropping &#39;unique_vendors_historic&#39; with VIF: 53.781692777473864
-Dropping &#39;distinct_sku_3m&#39; with VIF: 28.152291055047296
-Dropping &#39;unique_vendors_last_3m&#39; with VIF: 19.737012528668085
-Dropping &#39;AOV_3m&#39; with VIF: 11.562062638457881
-Dropping &#39;order_count_3m&#39; with VIF: 7.43386055493348
-Dropping &#39;gmv_3m&#39; with VIF: 6.995457242736988
-Dropping &#39;distinct_sku_historic&#39; with VIF: 6.135113081103419
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Eliminando &#39;unique_vendors_historic&#39; con VIF: 54.064770957302436
+Eliminando &#39;distinct_sku_3m&#39; con VIF: 28.301055802923763
+Eliminando &#39;unique_vendors_last_3m&#39; con VIF: 19.750538287298127
+Eliminando &#39;AOV_3m&#39; con VIF: 11.58528785671016
+Eliminando &#39;order_count_3m&#39; con VIF: 7.454986523068702
+Eliminando &#39;gmv_3m&#39; con VIF: 6.999537999734301
+Eliminando &#39;distinct_sku_historic&#39; con VIF: 6.1489608804132185
 </pre></div>
 </div>
 </div>
 </div>
-<p>verificando los resultados finales</p>
+<p>Se procede a verificar los resultados después de eliminar las variables alta multicolinealidad</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vif_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los resultados del VIF</span>
+<span class="n">vif_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="c1"># Agregar la columna &#39;Variable&#39; al DataFrame vif_data y asignarle los nombres de las columnas de df_reduction</span>
 <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;Variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">columns</span>
+<span class="c1"># Calcular el VIF para cada variable y almacenar los resultados en la columna &#39;VIF&#39;</span>
 <span class="n">vif_data</span><span class="p">[</span><span class="s2">&quot;VIF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">variance_inflation_factor</span><span class="p">(</span><span class="n">df_reduction</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">df_reduction</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 
-<span class="c1"># Display the result</span>
+<span class="c1"># Mostrar el resultado que contiene las variables y sus respectivos VIF</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">vif_data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1795,11 +2360,12 @@ Dropping &#39;distinct_sku_historic&#39; with VIF: 6.135113081103419
 </div>
 </div>
 </div>
-<p>por lo cuál el dataframe que será utilizado para entrenar el modelo de clasificación será el siguiente:</p>
+<p>Se evidencia que quedan 17 variables y todas tienen VIF menor a 5.
+Este dataframe, agregando la columna de la variable de interés, será utilizado para entregar el modelo de clasificación.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;is_churned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_churned&#39;</span><span class="p">]</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Agregar columna &#39;is_churned&#39; del dataframe original</span>
+<span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;is_churned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_churned&#39;</span><span class="p">]</span>
 <span class="n">df_reduction</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1959,14 +2525,16 @@ Dropping &#39;distinct_sku_historic&#39; with VIF: 6.135113081103419
 </table>
 </div></div></div>
 </div>
+<p>Ahora que se tiene el Dataframe completo se realiza una breve descripción de cada una de las variables para comprender los psoteriores análisis exlporatorios</p>
 </section>
 </section>
-</section>
-<section id="variable-objetivo">
-<h2>Variable objetivo<a class="headerlink" href="#variable-objetivo" title="Permalink to this heading">#</a></h2>
+<section id="analisis-con-variable-objetivo">
+<h2><strong>Análisis con variable objetivo</strong><a class="headerlink" href="#analisis-con-variable-objetivo" title="Permalink to this heading">#</a></h2>
+<p>Ahora que el dataframe y las variables están definidas y explicadas, se procede a realizar un análisis de las disrtibuciones de las variables teniendo en cuenta la variable objetivo o de interés.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;is_churned&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;not churned&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;churned&#39;</span><span class="p">}))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un gráfico de barras que cuenta los valores de &#39;is_churned&#39; y reemplaza los valores 0 y 1 con etiquetas</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;is_churned&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;Not churned&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;Churned&#39;</span><span class="p">}))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Count of churned and non churned customers&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
@@ -1975,75 +2543,74 @@ Dropping &#39;distinct_sku_historic&#39; with VIF: 6.135113081103419
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/022492510f1cf5ea1e5df978066cfa19d512e9c8483990b092d80f6293dc1c37.png" src="_images/022492510f1cf5ea1e5df978066cfa19d512e9c8483990b092d80f6293dc1c37.png" />
+<img alt="_images/5a352eed86219c16af0a9f501c2fa2da0c5c0b15e2803ee2528b1903eea97fa1.png" src="_images/5a352eed86219c16af0a9f501c2fa2da0c5c0b15e2803ee2528b1903eea97fa1.png" />
 </div>
 </div>
-</section>
 <section id="variables-numericas-vs-is-churned">
-<h2>variables numericas vs is_churned<a class="headerlink" href="#variables-numericas-vs-is-churned" title="Permalink to this heading">#</a></h2>
+<h3><strong>Variables numéricas vs is_churned</strong><a class="headerlink" href="#variables-numericas-vs-is-churned" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="c1"># Extract numerical columns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extraer columnas numéricas</span>
 <span class="n">numerical_cols</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">,</span> <span class="s1">&#39;is_churned&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
-<span class="c1"># Plot horizontal boxplot for each numerical column vs is_churned</span>
+<span class="c1"># Crear un boxplot para cada columna numérica en función de &#39;is_churned&#39;</span>
 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">numerical_cols</span><span class="p">:</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;is_churned&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="n">showfliers</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;is_churned&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="n">showfliers</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Not churned&#39;</span><span class="p">,</span> <span class="s1">&#39;Churned&#39;</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Boxplot of </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1"> by is_churned&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c9d1eef376cf1191ac2dc58946e29218a28fa82abe63b66bc067f87d3f72aa84.png" src="_images/c9d1eef376cf1191ac2dc58946e29218a28fa82abe63b66bc067f87d3f72aa84.png" />
-<img alt="_images/8ef6ac35b4c2eaab451e7ce3cc99d0020c4bf789713cb84731a4b9a28ebfdb4f.png" src="_images/8ef6ac35b4c2eaab451e7ce3cc99d0020c4bf789713cb84731a4b9a28ebfdb4f.png" />
-<img alt="_images/8133732547ccc11fd47830b940b3fe3f523f0f43eda4b3a4253a619e6e1cda4c.png" src="_images/8133732547ccc11fd47830b940b3fe3f523f0f43eda4b3a4253a619e6e1cda4c.png" />
-<img alt="_images/14277a0fe6565c4d9bb28498495d9346c1f6a0ecd9892493a0a6f43c3fbb8328.png" src="_images/14277a0fe6565c4d9bb28498495d9346c1f6a0ecd9892493a0a6f43c3fbb8328.png" />
-<img alt="_images/8f5d91f51a5d301b94fb9d565540dee1aa110e6918bed9823e521b310420846a.png" src="_images/8f5d91f51a5d301b94fb9d565540dee1aa110e6918bed9823e521b310420846a.png" />
-<img alt="_images/705804bb82bd1e1f17addbdcf5ef0d04b7684832397f367ea048c7aa60464c60.png" src="_images/705804bb82bd1e1f17addbdcf5ef0d04b7684832397f367ea048c7aa60464c60.png" />
-<img alt="_images/729af0c2ad22152a07ec2efd129fd6f32b20e777242524e4cf6ba08b0fda64db.png" src="_images/729af0c2ad22152a07ec2efd129fd6f32b20e777242524e4cf6ba08b0fda64db.png" />
-<img alt="_images/90e54ee0f70be7dc40ddfa101b8f913906c1cefbc185f62b3afff641c52ebc8a.png" src="_images/90e54ee0f70be7dc40ddfa101b8f913906c1cefbc185f62b3afff641c52ebc8a.png" />
-<img alt="_images/5e5eb0830336d72ed0ce3f1a031039eaed26be525bb5f8edd20f2615f316aa6d.png" src="_images/5e5eb0830336d72ed0ce3f1a031039eaed26be525bb5f8edd20f2615f316aa6d.png" />
-<img alt="_images/4805834c151afd3c885aa6b1fd6c72d472db105fe974f96a9d4fddf61ae88e0d.png" src="_images/4805834c151afd3c885aa6b1fd6c72d472db105fe974f96a9d4fddf61ae88e0d.png" />
-<img alt="_images/624fb776534a4de37b2447e2214efd93c5fc033597b602d94b3162b0e55d90e8.png" src="_images/624fb776534a4de37b2447e2214efd93c5fc033597b602d94b3162b0e55d90e8.png" />
-<img alt="_images/315c7cb98d3f8e23b8cd7071dd0235d47391ea749d0cad242d785dfe71009d1f.png" src="_images/315c7cb98d3f8e23b8cd7071dd0235d47391ea749d0cad242d785dfe71009d1f.png" />
-<img alt="_images/ff20e15301d4d2391adcbb0f513648fceb19551b0d598efd08cf5d93adfe1ecc.png" src="_images/ff20e15301d4d2391adcbb0f513648fceb19551b0d598efd08cf5d93adfe1ecc.png" />
-<img alt="_images/6731fd7cdeb2ea627bc1c50e0dd7c2af60a9a43908155b9363bb5ad413f9c824.png" src="_images/6731fd7cdeb2ea627bc1c50e0dd7c2af60a9a43908155b9363bb5ad413f9c824.png" />
-<img alt="_images/ee61c1a4aea2d46e96a23e209422bda3eeb008c9cc4ed7e2b6e59c85d44290ff.png" src="_images/ee61c1a4aea2d46e96a23e209422bda3eeb008c9cc4ed7e2b6e59c85d44290ff.png" />
+<img alt="_images/989f9e8313d2a4afc67842ae1b9dedb4aa2072deea8ac1bbf5e8d46df7961cf0.png" src="_images/989f9e8313d2a4afc67842ae1b9dedb4aa2072deea8ac1bbf5e8d46df7961cf0.png" />
+<img alt="_images/12b8062049928348fd506734091e8a946f0267741420eb5a53d3083bb38fa8af.png" src="_images/12b8062049928348fd506734091e8a946f0267741420eb5a53d3083bb38fa8af.png" />
+<img alt="_images/f323fb850355bccd018b4d02e837adf8cd95085e860a33fc17715c91a940de38.png" src="_images/f323fb850355bccd018b4d02e837adf8cd95085e860a33fc17715c91a940de38.png" />
+<img alt="_images/0945e5b36ecaaedf0c7c3f60791b1ae91093daac2dc0a70c457a2b3650aa3718.png" src="_images/0945e5b36ecaaedf0c7c3f60791b1ae91093daac2dc0a70c457a2b3650aa3718.png" />
+<img alt="_images/57204c9e66c0af088b634590dc01b18cbf6f4433690015b7fcb42c4e3ab5fec7.png" src="_images/57204c9e66c0af088b634590dc01b18cbf6f4433690015b7fcb42c4e3ab5fec7.png" />
+<img alt="_images/5cf90c5a6c2ae74f55e1d45d601f566014d834f70c509ca77466df4a8b112bdc.png" src="_images/5cf90c5a6c2ae74f55e1d45d601f566014d834f70c509ca77466df4a8b112bdc.png" />
+<img alt="_images/09a98a3d536195777c31097141117dd32baa32ce44590b409f0124d3234d175a.png" src="_images/09a98a3d536195777c31097141117dd32baa32ce44590b409f0124d3234d175a.png" />
+<img alt="_images/499413df2ad6fd7ea726adaffdd5cf455b85e3fabc7f5f79232bb8018f83551f.png" src="_images/499413df2ad6fd7ea726adaffdd5cf455b85e3fabc7f5f79232bb8018f83551f.png" />
+<img alt="_images/5a8565cbccf961ab2d3e1400255325b0981b0bc8a19f8450877a7842ab693ede.png" src="_images/5a8565cbccf961ab2d3e1400255325b0981b0bc8a19f8450877a7842ab693ede.png" />
+<img alt="_images/fb380c4b767e7f6fc93156dd64c09be7ed84e1950f7286e2995638e2e70f445a.png" src="_images/fb380c4b767e7f6fc93156dd64c09be7ed84e1950f7286e2995638e2e70f445a.png" />
+<img alt="_images/ae600f94ef6d0892e82682c7b7afa25ea64b01db9fc60760fe218d4bfa39ab95.png" src="_images/ae600f94ef6d0892e82682c7b7afa25ea64b01db9fc60760fe218d4bfa39ab95.png" />
+<img alt="_images/38a846bac24c009001f43b4781153589bcaff7120481f8cf25bea81f108a0ecb.png" src="_images/38a846bac24c009001f43b4781153589bcaff7120481f8cf25bea81f108a0ecb.png" />
+<img alt="_images/29ef3bb60f23d4af66cb995a0c842be1b510e2eeafa5ef2da336b2e4fcd4df84.png" src="_images/29ef3bb60f23d4af66cb995a0c842be1b510e2eeafa5ef2da336b2e4fcd4df84.png" />
+<img alt="_images/977eedf7ac2671dbb68e1ab9ae321499b2d2b134ee55d6ab440d6eae20a5031b.png" src="_images/977eedf7ac2671dbb68e1ab9ae321499b2d2b134ee55d6ab440d6eae20a5031b.png" />
+<img alt="_images/d346508f979156868c9001b65ebff5cf01fb890fd32c71750ac7c999d44c1c8c.png" src="_images/d346508f979156868c9001b65ebff5cf01fb890fd32c71750ac7c999d44c1c8c.png" />
 </div>
 </div>
 </section>
 <section id="variables-categoricas-vs-is-churned">
-<h2>variables categoricas vs is_churned<a class="headerlink" href="#variables-categoricas-vs-is-churned" title="Permalink to this heading">#</a></h2>
+<h3><strong>Variables categóricas vs is_churned</strong><a class="headerlink" href="#variables-categoricas-vs-is-churned" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_with_is_churned</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
-    <span class="c1"># Pivot table to get the counts</span>
+    <span class="c1"># Crear una tabla pivote para obtener los conteos</span>
     <span class="n">pivot_table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;is_churned&#39;</span><span class="p">,</span> <span class="n">variable</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="c1"># Calculate the percentages</span>
+    <span class="c1"># Calcular los porcentajes</span>
     <span class="n">pivot_table_percentage</span> <span class="o">=</span> <span class="n">pivot_table</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">pivot_table</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
 
-    <span class="c1"># Plot</span>
+    <span class="c1"># Crear el gráfico</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">pivot_table_percentage</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Not churned&#39;</span><span class="p">,</span> <span class="s1">&#39;Churned&#39;</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Percentage of &quot;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s1">&quot; within each &quot;is_churned&quot; class&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Percentage&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 
-    <span class="c1"># Annotate the percentages on the bars</span>
+    <span class="c1"># Anotar los porcentajes en las barras</span>
     <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span> <span class="c1"># Assuming &#39;is_churned&#39; has two classes, 0 and 1</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">percentage</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pivot_table_percentage</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">pivot_table_percentage</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()):</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="p">(</span><span class="n">percentage</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">percentage</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="c1"># Iterate over all columns except &#39;is_churned&#39;</span>
+<span class="c1"># Iterar sobre todas las columnas excepto &#39;is_churned&#39;</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">,</span> <span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">]:</span>
     <span class="k">if</span> <span class="n">column</span> <span class="o">!=</span> <span class="s1">&#39;is_churned&#39;</span><span class="p">:</span>
         <span class="n">compare_with_is_churned</span><span class="p">(</span><span class="n">df_reduction</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
@@ -2051,11 +2618,12 @@ Dropping &#39;distinct_sku_historic&#39; with VIF: 6.135113081103419
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/02306a28dfb87621202b57f66d2ee6c7393bd3a57a96d5a850f6d5516303058f.png" src="_images/02306a28dfb87621202b57f66d2ee6c7393bd3a57a96d5a850f6d5516303058f.png" />
-<img alt="_images/2eb89a4c590b47f25ebb4ab026bb7ea8777fee8665c5493389db6ac9c05d4504.png" src="_images/2eb89a4c590b47f25ebb4ab026bb7ea8777fee8665c5493389db6ac9c05d4504.png" />
-<img alt="_images/34b2b6d02d4fedcb3be5aff35011eb76cf9bd329e440d76145904b36f37caf4d.png" src="_images/34b2b6d02d4fedcb3be5aff35011eb76cf9bd329e440d76145904b36f37caf4d.png" />
+<img alt="_images/35565f4af2ad95a0b194b52b8d29bae3ba1100692e10f82989032c9f4e4a3c79.png" src="_images/35565f4af2ad95a0b194b52b8d29bae3ba1100692e10f82989032c9f4e4a3c79.png" />
+<img alt="_images/a29ecb7fd40066681916c2e816b1b864a516c38160969ae1c06b0f8d6ce54fb2.png" src="_images/a29ecb7fd40066681916c2e816b1b864a516c38160969ae1c06b0f8d6ce54fb2.png" />
+<img alt="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" src="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" />
 </div>
 </div>
+</section>
 </section>
 </section>
 
@@ -2099,6 +2667,15 @@ Dropping &#39;distinct_sku_historic&#39; with VIF: 6.135113081103419
         <p class="prev-next-title">Visualización de Datos - Proyecto Final</p>
       </div>
     </a>
+    <a class="right-next"
+       href="churn_prediction_model_training.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Models Training and Comparison</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div></div>
   
 </div>
@@ -2117,22 +2694,22 @@ Dropping &#39;distinct_sku_historic&#39; with VIF: 6.135113081103419
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad">Reducción de dimensionalidad</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">variables categóricas</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">verificando supuestos de la prueba chi cuadrado</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicando-prueba-chi-cuadrado">aplicando prueba chi cuadrado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad"><strong>Reducción de dimensionalidad</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas"><strong>Variables Categóricas</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado"><strong>Verificando supuestos de la prueba chi cuadrado</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado"><strong>Aplicar prueba chi cuadrado</strong></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">variables numéricas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-nulos">valores nulos</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminando-multicolinealidad-con-variance-inflation-factor-vif">Eliminando multicolinealidad con Variance Inflation Factor (VIF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas"><strong>Variables numéricas</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-faltantes"><strong>Datos faltantes</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif"><strong>Eliminar multicolinealidad con Variance Inflation Factor (VIF)</strong></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo"><strong>Análisis con variable objetivo</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned"><strong>Variables numéricas vs is_churned</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned"><strong>Variables categóricas vs is_churned</strong></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-objetivo">Variable objetivo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">variables numericas vs is_churned</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">variables categoricas vs is_churned</a></li>
 </ul>
   </nav></div>
 
