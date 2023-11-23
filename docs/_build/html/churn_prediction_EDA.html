@@ -158,7 +158,7 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Churn Prediction EDA</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Churn Prediction EDA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="churn_prediction_model_training.html">Models Training and Comparison</a></li>
 </ul>
 
@@ -353,20 +353,20 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad"><strong>Reducción de dimensionalidad</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas"><strong>Variables Categóricas</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado"><strong>Verificando supuestos de la prueba chi cuadrado</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado"><strong>Aplicar prueba chi cuadrado</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad">Reducción de dimensionalidad</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">Verificando supuestos de la prueba chi cuadrado</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado">Aplicar prueba chi cuadrado</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas"><strong>Variables numéricas</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-faltantes"><strong>Datos faltantes</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif"><strong>Eliminar multicolinealidad con Variance Inflation Factor (VIF)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-faltantes">Datos faltantes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif">Eliminar multicolinealidad con Variance Inflation Factor (VIF)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo"><strong>Análisis con variable objetivo</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned"><strong>Variables numéricas vs is_churned</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned"><strong>Variables categóricas vs is_churned</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo">Análisis con variable objetivo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">Variables numéricas vs is_churned</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">Variables categóricas vs is_churned</a></li>
 </ul>
 </li>
 </ul>
@@ -381,7 +381,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="churn-prediction-eda">
-<h1><strong>Churn Prediction EDA</strong><a class="headerlink" href="#churn-prediction-eda" title="Permalink to this heading">#</a></h1>
+<h1>Churn Prediction EDA<a class="headerlink" href="#churn-prediction-eda" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Importar las librerías necesarias</span>
@@ -430,11 +430,11 @@ memory usage: 4.5 MB
 </div>
 </div>
 <section id="reduccion-de-dimensionalidad">
-<h2><strong>Reducción de dimensionalidad</strong><a class="headerlink" href="#reduccion-de-dimensionalidad" title="Permalink to this heading">#</a></h2>
+<h2>Reducción de dimensionalidad<a class="headerlink" href="#reduccion-de-dimensionalidad" title="Permalink to this heading">#</a></h2>
 <p>Se hará una reducción de dimensionalidad con base en la prueba chi-cuadrado. El objetivo principal es identificar y retener solo aquellas variables categóricas que son estadísticamente independientes entre sí.</p>
 <p>Esto se hace utilizando una prueba chi-cuadrado, donde se considera que dos variables son independientes si el valor p de la prueba es mayor que 0.05 (umbral común para significancia estadística).</p>
 <section id="variables-categoricas">
-<h3><strong>Variables Categóricas</strong><a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h3>
+<h3>Variables Categóricas<a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h3>
 <p>Verificar la dimensión del dataframe de variables categóricas</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -452,7 +452,7 @@ memory usage: 4.5 MB
 <p>En total hay 83 columnas categóricas. Se realizarán pruebas de independecia en estas 83 columnas categóricas.</p>
 </section>
 <section id="verificando-supuestos-de-la-prueba-chi-cuadrado">
-<h3><strong>Verificando supuestos de la prueba chi cuadrado</strong><a class="headerlink" href="#verificando-supuestos-de-la-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h3>
+<h3>Verificando supuestos de la prueba chi cuadrado<a class="headerlink" href="#verificando-supuestos-de-la-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h3>
 <p>Uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica.  Se verificará que cada variable categórica cumpla con este supuesto.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -637,7 +637,7 @@ memory usage: 4.5 MB
 </div>
 </div>
 <section id="aplicar-prueba-chi-cuadrado">
-<h4><strong>Aplicar prueba chi cuadrado</strong><a class="headerlink" href="#aplicar-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h4>
+<h4>Aplicar prueba chi cuadrado<a class="headerlink" href="#aplicar-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h4>
 <p>Se procede a hacer pruebas chi cuadrado entre todas las posibles combinaciones de columnas categóricas que quedaron, y se guarda este resultado en un nuevo dataframe.</p>
 <p>Esta prueba es útil para evaluar la independencia estadística entre pares de variables categóricas en un conjunto de datos.</p>
 <div class="cell docutils container">
@@ -1815,7 +1815,7 @@ memory usage: 4.5 MB
 </section>
 </section>
 <section id="variables-numericas">
-<h3><strong>Variables numéricas</strong><a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h3>
+<h3>Variables numéricas<a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h3>
 <p>Para las variables numéricas se realiza una matrix de correlación</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1835,7 +1835,7 @@ memory usage: 4.5 MB
 <p>Antes de este proceso, se deben revisar los datos faltantes.</p>
 </section>
 <section id="datos-faltantes">
-<h3><strong>Datos faltantes</strong><a class="headerlink" href="#datos-faltantes" title="Permalink to this heading">#</a></h3>
+<h3>Datos faltantes<a class="headerlink" href="#datos-faltantes" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se filtran las columnas con las variables numericas, las variables indpendientes y la variable objetivo</span>
@@ -2234,7 +2234,7 @@ dtype: int64
 </div>
 </section>
 <section id="eliminar-multicolinealidad-con-variance-inflation-factor-vif">
-<h3><strong>Eliminar multicolinealidad con Variance Inflation Factor (VIF)</strong><a class="headerlink" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif" title="Permalink to this heading">#</a></h3>
+<h3>Eliminar multicolinealidad con Variance Inflation Factor (VIF)<a class="headerlink" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif" title="Permalink to this heading">#</a></h3>
 <p>Recordemos que:</p>
 <ul class="simple">
 <li><p>Un VIF ≥ 5 indica alta multicolinealidad entre la correspondiente variable independiente y las demás variables.</p></li>
@@ -2529,7 +2529,7 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 </section>
 </section>
 <section id="analisis-con-variable-objetivo">
-<h2><strong>Análisis con variable objetivo</strong><a class="headerlink" href="#analisis-con-variable-objetivo" title="Permalink to this heading">#</a></h2>
+<h2>Análisis con variable objetivo<a class="headerlink" href="#analisis-con-variable-objetivo" title="Permalink to this heading">#</a></h2>
 <p>Ahora que el dataframe y las variables están definidas y explicadas, se procede a realizar un análisis de las disrtibuciones de las variables teniendo en cuenta la variable objetivo o de interés.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2546,8 +2546,9 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <img alt="_images/5a352eed86219c16af0a9f501c2fa2da0c5c0b15e2803ee2528b1903eea97fa1.png" src="_images/5a352eed86219c16af0a9f501c2fa2da0c5c0b15e2803ee2528b1903eea97fa1.png" />
 </div>
 </div>
+<p>Se evidencia que hay un desbalance notable en las clases de la variable objetivo</p>
 <section id="variables-numericas-vs-is-churned">
-<h3><strong>Variables numéricas vs is_churned</strong><a class="headerlink" href="#variables-numericas-vs-is-churned" title="Permalink to this heading">#</a></h3>
+<h3>Variables numéricas vs is_churned<a class="headerlink" href="#variables-numericas-vs-is-churned" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extraer columnas numéricas</span>
@@ -2582,9 +2583,16 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <img alt="_images/d346508f979156868c9001b65ebff5cf01fb890fd32c71750ac7c999d44c1c8c.png" src="_images/d346508f979156868c9001b65ebff5cf01fb890fd32c71750ac7c999d44c1c8c.png" />
 </div>
 </div>
+<p>Interpretaciones:</p>
+<ul class="simple">
+<li><p>Se evidencia que hay variables cuya dispersión es significativamente distinta en cada clase de la variable ‘is_churned’, como es el caso de ‘new_skus_within_3m’, ‘mean_order_lapse’ y ‘visit_count_3m’.</p></li>
+<li><p>Hay variables cuyos valores son cero en su gran mayoría, y los valores distintos a cero, son considerados atípicos (los datos atípicos están omitidos en estos boxplot, por eso no se ve nada distinto a cero) . Este es el caso de ‘tickets_finales’ y ‘canceled_orders’, lo cuál quiere decir que la gran mayoría de clientes nunca ha contactado a servicio al cliente, ni ha cancelado una órden. Pero las pocas veces que esto se da, puede ser un claro indicio que el cliente está en riesgo de abandonar la compañía</p></li>
+<li><p>Hay otras variables cuya dispersión en ambas clases de la variable objetivo parece ser bastante parecida, tales como lo son ‘AOV’ y casi todas las variables que calculan un ‘Delta’</p></li>
+<li><p>Se puede ver también que en general, los clientes no churn tienden a tener mayor antiguedad que aquellos que sí son churn, lo cuál podría sonar intuitivo pero que al final es contrastado con la información.</p></li>
+</ul>
 </section>
 <section id="variables-categoricas-vs-is-churned">
-<h3><strong>Variables categóricas vs is_churned</strong><a class="headerlink" href="#variables-categoricas-vs-is-churned" title="Permalink to this heading">#</a></h3>
+<h3>Variables categóricas vs is_churned<a class="headerlink" href="#variables-categoricas-vs-is-churned" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_with_is_churned</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
@@ -2623,6 +2631,12 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <img alt="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" src="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" />
 </div>
 </div>
+<p>Interpretaciones:</p>
+<ul class="simple">
+<li><p>Se puede observar entonces una diferencia significativa en la proporción de la variable warehouse_bogota entre las clases de la variable objetivo ‘is_churned’</p></li>
+<li><p>No siendo así con la variable sub_categoria_ambientadores, cuya proporción varía mucho entre cada clase de la variable objetivo</p></li>
+<li><p>Para la última variable categórica ‘Sub_categoria_complementos_y_vitaminas’, la diferencia de proporciones en cada clase de la variable objetivo fluctúa ligeramente</p></li>
+</ul>
 </section>
 </section>
 </section>
@@ -2694,20 +2708,20 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad"><strong>Reducción de dimensionalidad</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas"><strong>Variables Categóricas</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado"><strong>Verificando supuestos de la prueba chi cuadrado</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado"><strong>Aplicar prueba chi cuadrado</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduccion-de-dimensionalidad">Reducción de dimensionalidad</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">Verificando supuestos de la prueba chi cuadrado</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado">Aplicar prueba chi cuadrado</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas"><strong>Variables numéricas</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-faltantes"><strong>Datos faltantes</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif"><strong>Eliminar multicolinealidad con Variance Inflation Factor (VIF)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-faltantes">Datos faltantes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif">Eliminar multicolinealidad con Variance Inflation Factor (VIF)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo"><strong>Análisis con variable objetivo</strong></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned"><strong>Variables numéricas vs is_churned</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned"><strong>Variables categóricas vs is_churned</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo">Análisis con variable objetivo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">Variables numéricas vs is_churned</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">Variables categóricas vs is_churned</a></li>
 </ul>
 </li>
 </ul>
