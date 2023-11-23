@@ -1,0 +1,1301 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Models Training and Comparison &#8212; Proyecto_Final_DataViz</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'churn_prediction_model_training';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Churn Prediction EDA" href="churn_prediction_EDA.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Visualización de Datos - Proyecto Final
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="churn_prediction_EDA.html"><strong>Churn Prediction EDA</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Models Training and Comparison</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchurn_prediction_model_training.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/churn_prediction_model_training.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Models Training and Comparison</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-imputing-scaling-and-train-test-split">Feature selection, imputing, scaling and train test split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-de-las-variables">Descripción de las variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-all-models-without-hyperparameter-tuning">Testing all models without hyperparameter tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperparameter-tuning">Hyperparameter Tuning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#codigo-para-cargar-modelos">Código para cargar modelos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-la-calidad-del-archivo-pkl-calculando-metricas-de-un-modelo">verificar la calidad del archivo .pkl calculando métricas de un modelo</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="models-training-and-comparison">
+<h1>Models Training and Comparison<a class="headerlink" href="#models-training-and-comparison" title="Permalink to this heading">#</a></h1>
+<section id="feature-selection-imputing-scaling-and-train-test-split">
+<h2>Feature selection, imputing, scaling and train test split<a class="headerlink" href="#feature-selection-imputing-scaling-and-train-test-split" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;final_dataframe_churn_prediction.csv&#39;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;is_churned&quot;</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_churned&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>order_count_historic</th>
+      <th>gmv_historic</th>
+      <th>AOV_historic</th>
+      <th>antiquity_days</th>
+      <th>visits_count_3m</th>
+      <th>canceled_orders</th>
+      <th>tickets_finales</th>
+      <th>mean_order_lapse</th>
+      <th>new_skus_within_3m</th>
+      <th>orders_count_delta_1m</th>
+      <th>gmv_delta_1m</th>
+      <th>distinct_skus_delta_1m</th>
+      <th>orders_count_delta_2m</th>
+      <th>gmv_delta_2m</th>
+      <th>distinct_skus_delta_2m</th>
+      <th>warehouse_Bogota</th>
+      <th>sub_categoria_Ambientadores</th>
+      <th>sub_categoria_Complementos y vitaminas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1209</th>
+      <td>7</td>
+      <td>4.982586e+06</td>
+      <td>7.117980e+05</td>
+      <td>136</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>22.666667</td>
+      <td>5</td>
+      <td>0.000000</td>
+      <td>0.223456</td>
+      <td>0.181818</td>
+      <td>-0.800000</td>
+      <td>-0.673311</td>
+      <td>-0.555556</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5244</th>
+      <td>130</td>
+      <td>1.793423e+07</td>
+      <td>1.379556e+05</td>
+      <td>454</td>
+      <td>21</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3.519380</td>
+      <td>131</td>
+      <td>-0.235294</td>
+      <td>0.263366</td>
+      <td>0.072165</td>
+      <td>-0.268293</td>
+      <td>0.063617</td>
+      <td>-0.067039</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3036</th>
+      <td>29</td>
+      <td>4.308398e+07</td>
+      <td>1.485654e+06</td>
+      <td>574</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>20.500000</td>
+      <td>72</td>
+      <td>0.000000</td>
+      <td>0.384690</td>
+      <td>0.350000</td>
+      <td>1.000000</td>
+      <td>0.230457</td>
+      <td>0.041322</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1158</th>
+      <td>5</td>
+      <td>9.082359e+05</td>
+      <td>1.816472e+05</td>
+      <td>148</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>37.000000</td>
+      <td>5</td>
+      <td>0.000000</td>
+      <td>0.223456</td>
+      <td>0.181818</td>
+      <td>-0.666667</td>
+      <td>-0.765666</td>
+      <td>-0.687500</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5204</th>
+      <td>178</td>
+      <td>7.668532e+07</td>
+      <td>4.308164e+05</td>
+      <td>417</td>
+      <td>34</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.355932</td>
+      <td>137</td>
+      <td>-0.133333</td>
+      <td>0.124538</td>
+      <td>0.016287</td>
+      <td>0.166667</td>
+      <td>-0.044767</td>
+      <td>0.022026</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3092</th>
+      <td>52</td>
+      <td>2.620833e+07</td>
+      <td>5.040064e+05</td>
+      <td>448</td>
+      <td>11</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8.784314</td>
+      <td>22</td>
+      <td>-0.500000</td>
+      <td>-0.744108</td>
+      <td>-0.615385</td>
+      <td>0.500000</td>
+      <td>0.164743</td>
+      <td>-0.131579</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3772</th>
+      <td>8</td>
+      <td>1.861974e+06</td>
+      <td>2.327468e+05</td>
+      <td>59</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8.428571</td>
+      <td>61</td>
+      <td>0.000000</td>
+      <td>0.223456</td>
+      <td>0.181818</td>
+      <td>0.058824</td>
+      <td>0.211494</td>
+      <td>0.198953</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5191</th>
+      <td>283</td>
+      <td>1.640629e+07</td>
+      <td>5.797276e+04</td>
+      <td>562</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1.992908</td>
+      <td>21</td>
+      <td>-0.562500</td>
+      <td>-0.681850</td>
+      <td>-0.604651</td>
+      <td>-0.041667</td>
+      <td>-0.013422</td>
+      <td>0.268293</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5226</th>
+      <td>407</td>
+      <td>4.802106e+07</td>
+      <td>1.179879e+05</td>
+      <td>535</td>
+      <td>12</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1.317734</td>
+      <td>52</td>
+      <td>-0.720000</td>
+      <td>-0.152650</td>
+      <td>-0.100917</td>
+      <td>-0.111111</td>
+      <td>0.176199</td>
+      <td>0.190141</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>860</th>
+      <td>2</td>
+      <td>4.580413e+05</td>
+      <td>2.290207e+05</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>7.000000</td>
+      <td>21</td>
+      <td>0.000000</td>
+      <td>0.223456</td>
+      <td>0.181818</td>
+      <td>0.058824</td>
+      <td>0.211494</td>
+      <td>0.198953</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>4234 rows × 18 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="descripcion-de-las-variables">
+<h2>Descripción de las variables<a class="headerlink" href="#descripcion-de-las-variables" title="Permalink to this heading">#</a></h2>
+<p>Nótese que cada registro describe las variables comportamentales de un cliente.</p>
+<ul class="simple">
+<li><p>is_churned: Variable objetivo, 1 indica que el cliente es un cliente actualmente ‘churn’, 0 indica que el cliente no es ‘churn’ en otras palabras está activo.</p></li>
+<li><p>order_count_historic: Conteo histórico de órdenes.</p></li>
+<li><p>gmv_historic: Sumatoria del gmv histórico (Gross Merchandise Value) en COP.</p></li>
+<li><p>AOV_historic: Average order value del cliente.</p></li>
+<li><p>antiquity_days: Días transcurridos desde la primera órden del cliente.</p></li>
+<li><p>visits_count_3m: Conteo de visitas de la empresa al cliente en los tres meses anteriores a su última compra.</p></li>
+<li><p>canceled_orders: Conteo de ordenes canceladas por parte del cliente.</p></li>
+<li><p>tickets_finales: Conteo de tickets abiertos por el cliente. Un ticket es un contacto con customer_service</p></li>
+<li><p>mean_order_lapse: Lapso promedio entre órdenes</p></li>
+<li><p>new_skus_within_3m: Cantidad de productos nuevos que el cliente compró en los tres meses previos a su última órden</p></li>
+<li><p>orders_count_delta_1m: Variación entre el conteo de órdenes del último més de actividad del cliente versus el més anterior. Se calcula como ordenes_ultimo_mes - ordenes_mes_anterior / ordenes_mes_anterior</p></li>
+<li><p>gmv_delta_1m: Variacion en el gmv (ultimo més de actividad)</p></li>
+<li><p>distinct_skus_delta_1m: Variacion en la cantidad de productos que se compra (ultimo més de actividad)</p></li>
+<li><p>orders_count_delta_2m: Variación entre el conteo de órdenes (dos últimos meses de actividad)</p></li>
+<li><p>gmv_delta_2m: Variacion en el gmv (dos últimos meses de actividad)</p></li>
+<li><p>distinct_skus_delta_2m: Variacion en la cantidad de productos que se compra (dos últimos meses de actividad)</p></li>
+<li><p>warehouse_Bogota: El cliente pertenece a la ciudad de Bogotá</p></li>
+<li><p>sub_categoria_Ambientadores: El cliente compra los productos de la sub categoría Ambientadores</p></li>
+<li><p>sub_categoria_Complementos y vitaminas: El cliente compra los productos de la sub categoría Complementos y vitaminas</p></li>
+</ul>
+</section>
+<section id="testing-all-models-without-hyperparameter-tuning">
+<h2>Testing all models without hyperparameter tuning<a class="headerlink" href="#testing-all-models-without-hyperparameter-tuning" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_iterative_imputer</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span><span class="p">,</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">IterativeImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="nn">xgb</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+<span class="kn">from</span> <span class="nn">imblearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span> <span class="k">as</span> <span class="n">ImbPipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="c1"># Function to evaluate models</span>
+<span class="k">def</span> <span class="nf">evaluate_models</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        
+        <span class="c1"># Set random_state to 42 if the classifier has this parameter</span>
+        <span class="k">if</span> <span class="s2">&quot;random_state&quot;</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+        
+        <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s1">&#39;imputer&#39;</span><span class="p">,</span> <span class="n">IterativeImputer</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s1">&#39;classifier&#39;</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+            <span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">use_smote</span><span class="p">:</span>
+            <span class="n">steps</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;smote&#39;</span><span class="p">,</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)))</span>
+            
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">ImbPipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_smote</span> <span class="k">else</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+        
+        <span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kf</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;f1&quot;</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+<span class="c1"># Models without SMOTE</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Logistic Regression&quot;</span><span class="p">:</span> <span class="n">LogisticRegression</span><span class="p">(),</span>
+    <span class="s2">&quot;K-Nearest Neighbors&quot;</span><span class="p">:</span> <span class="n">KNeighborsClassifier</span><span class="p">(),</span>
+    <span class="s2">&quot;Decision Tree&quot;</span><span class="p">:</span> <span class="n">DecisionTreeClassifier</span><span class="p">(),</span>
+    <span class="s2">&quot;Random Forest&quot;</span><span class="p">:</span> <span class="n">RandomForestClassifier</span><span class="p">(),</span>
+    <span class="s2">&quot;Extreme Gradient Boosting&quot;</span><span class="p">:</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBClassifier</span><span class="p">(),</span>
+    <span class="c1"># &quot;Support Vector Classifier&quot;: SVC(probability=True)  # &#39;probability=True&#39; needed for scoring recall in SVC,</span>
+<span class="p">}</span>
+
+<span class="c1"># Evaluate and plot for both scenarios</span>
+<span class="n">results_without_smote</span> <span class="o">=</span> <span class="n">evaluate_models</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">results_with_smote</span> <span class="o">=</span> <span class="n">evaluate_models</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plotting the results</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">results_without_smote</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Classification Models Cross Validation F1-score Without SMOTE&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;F1-Score&#39;</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">results_with_smote</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Classification Models Cross Validation F1-score With SMOTE&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;F1-Score&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dfce784d1fa6ec065200c5fc5c058f876176b830ee39990d01a82bc7a608a384.png" src="_images/dfce784d1fa6ec065200c5fc5c058f876176b830ee39990d01a82bc7a608a384.png" />
+</div>
+</div>
+</section>
+<section id="hyperparameter-tuning">
+<h2>Hyperparameter Tuning<a class="headerlink" href="#hyperparameter-tuning" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_iterative_imputer</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RandomizedSearchCV</span><span class="p">,</span> <span class="n">KFold</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+<span class="kn">from</span> <span class="nn">imblearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span> <span class="k">as</span> <span class="n">ImbPipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">IterativeImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="nn">xgb</span>
+
+<span class="c1"># Utility function to train and log models</span>
+<span class="k">def</span> <span class="nf">train_and_log_model</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="c1"># Set random_state to 42 if the classifier has this parameter</span>
+    <span class="k">if</span> <span class="s2">&quot;random_state&quot;</span> <span class="ow">in</span> <span class="n">classifier</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">classifier</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+    <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;imputer&#39;</span><span class="p">,</span> <span class="n">IterativeImputer</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+        <span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">classifier</span><span class="p">)</span>
+        <span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">use_smote</span><span class="p">:</span>
+        <span class="n">steps</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;smote&#39;</span><span class="p">,</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)))</span>
+        <span class="n">model_name</span> <span class="o">+=</span> <span class="s1">&#39; with SMOTE&#39;</span>
+        
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">ImbPipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_smote</span> <span class="k">else</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+
+    <span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">param_distributions</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kf</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">model_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">.pkl&#39;</span>
+    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">best_estimator_</span><span class="p">,</span> <span class="n">model_filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model saved as </span><span class="si">{</span><span class="n">model_filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Make predictions and calculate metrics</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">y_pred_probs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="s2">&quot;predict_proba&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+        <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+        <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+        <span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+        <span class="s2">&quot;AUC&quot;</span><span class="p">:</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_probs</span><span class="p">)</span> <span class="k">if</span> <span class="n">y_pred_probs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;best_cross_val_score&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">best_score_</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Calculate ROC Curve and AUC</span>
+    <span class="k">if</span> <span class="n">y_pred_probs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_probs</span><span class="p">)</span>
+        <span class="n">roc_auc</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+
+        <span class="c1"># Plot ROC curve</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;ROC curve (area = </span><span class="si">{</span><span class="n">roc_auc</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True Positive Rate&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ROC Curve for </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Plot confusion matrix</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">disp</span> <span class="o">=</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">cm</span><span class="p">)</span>
+    <span class="n">disp</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Confusion Matrix for </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">metrics</span>
+
+<span class="c1"># Define model parameters</span>
+<span class="n">knn_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;KNN__n_neighbors&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="s1">&#39;KNN__weights&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;KNN__algorithm&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;ball_tree&#39;</span><span class="p">,</span> <span class="s1">&#39;kd_tree&#39;</span><span class="p">,</span> <span class="s1">&#39;brute&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">logreg_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;LogisticRegression__C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;LogisticRegression__penalty&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="s1">&#39;l2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;LogisticRegression__solver&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;newton-cg&#39;</span><span class="p">,</span> <span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span> <span class="s1">&#39;liblinear&#39;</span><span class="p">,</span> <span class="s1">&#39;sag&#39;</span><span class="p">,</span> <span class="s1">&#39;saga&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;LogisticRegression__max_iter&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
+    <span class="s1">&#39;LogisticRegression__class_weight&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;balanced&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;LogisticRegression__fit_intercept&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">svc_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Support_Vector_Classifier__C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+    <span class="s1">&#39;Support_Vector_Classifier__kernel&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="s1">&#39;sigmoid&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Support_Vector_Classifier__gamma&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Support_Vector_Classifier__class_weight&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;balanced&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Support_Vector_Classifier__probability&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">rf_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;RandomForest__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span>
+    <span class="s1">&#39;RandomForest__criterion&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gini&#39;</span><span class="p">,</span> <span class="s1">&#39;entropy&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;RandomForest__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="s1">&#39;RandomForest__min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s1">&#39;RandomForest__min_samples_leaf&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s1">&#39;RandomForest__bootstrap&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+    <span class="s1">&#39;RandomForest__class_weight&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;balanced&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">scale_pos_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">xgb_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;XGBoost__learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__subsample&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__colsample_bytree&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__gamma&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__lambda&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__alpha&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__scale_pos_weight&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">scale_pos_weight</span><span class="p">],</span>
+    <span class="s1">&#39;XGBoost__max_delta_step&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Store results</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Train models and store results</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;KNN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">KNeighborsClassifier</span><span class="p">(),</span> <span class="n">knn_params</span><span class="p">,</span> <span class="s1">&#39;KNN&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;KNN With Smote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">KNeighborsClassifier</span><span class="p">(),</span> <span class="n">knn_params</span><span class="p">,</span> <span class="s1">&#39;KNN&#39;</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;Logistic Regression&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">(),</span> <span class="n">logreg_params</span><span class="p">,</span> <span class="s1">&#39;LogisticRegression&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;Logistic Regression With Smote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">(),</span> <span class="n">logreg_params</span><span class="p">,</span> <span class="s1">&#39;LogisticRegression&#39;</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># results[&#39;SVC&#39;] = train_and_log_model(SVC(), svc_params, &#39;Support_Vector_Classifier&#39;)</span>
+<span class="c1"># results[&#39;SVC With Smote&#39;] = train_and_log_model(SVC(), svc_params, &#39;Support_Vector_Classifier&#39;, use_smote=True)</span>
+
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;Random Forest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">(),</span> <span class="n">rf_params</span><span class="p">,</span> <span class="s1">&#39;RandomForest&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;Random Forest With Smote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">(),</span> <span class="n">rf_params</span><span class="p">,</span> <span class="s1">&#39;RandomForest&#39;</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;XGBoost&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">xgb</span><span class="o">.</span><span class="n">XGBClassifier</span><span class="p">(),</span> <span class="n">xgb_params</span><span class="p">,</span> <span class="s1">&#39;XGBoost&#39;</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;XGBoost With Smote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_and_log_model</span><span class="p">(</span><span class="n">xgb</span><span class="o">.</span><span class="n">XGBClassifier</span><span class="p">(),</span> <span class="n">xgb_params</span><span class="p">,</span> <span class="s1">&#39;XGBoost&#39;</span><span class="p">,</span> <span class="n">use_smote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">results_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as KNN.pkl
+</pre></div>
+</div>
+<img alt="_images/c7afb248401da93ac37e63be29d5524437f97fb5f5cc172c96441e6949264953.png" src="_images/c7afb248401da93ac37e63be29d5524437f97fb5f5cc172c96441e6949264953.png" />
+<img alt="_images/58e6857015fc3a05fff9542ed4f9df962067452c7be467dde7848858b92e9f15.png" src="_images/58e6857015fc3a05fff9542ed4f9df962067452c7be467dde7848858b92e9f15.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as KNN_with_SMOTE.pkl
+</pre></div>
+</div>
+<img alt="_images/57cce8a5c9bdc1075cd6cf0f6771bb4c10bc1908dcc8227dceb052d76f7e64d9.png" src="_images/57cce8a5c9bdc1075cd6cf0f6771bb4c10bc1908dcc8227dceb052d76f7e64d9.png" />
+<img alt="_images/e0759a16694dfe5db321d5eec9535af3f93e63551cec5b5fb62024ac977c6693.png" src="_images/e0759a16694dfe5db321d5eec9535af3f93e63551cec5b5fb62024ac977c6693.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as LogisticRegression.pkl
+</pre></div>
+</div>
+<img alt="_images/a616381aa2fd9bc4d60f8aecec711f3501c222045c3912b989c32a73fbaf9957.png" src="_images/a616381aa2fd9bc4d60f8aecec711f3501c222045c3912b989c32a73fbaf9957.png" />
+<img alt="_images/fba7bb76b24c87d6b59a914301fdfe6614638b16089f31c3fbcbd9b2cba85480.png" src="_images/fba7bb76b24c87d6b59a914301fdfe6614638b16089f31c3fbcbd9b2cba85480.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as LogisticRegression_with_SMOTE.pkl
+</pre></div>
+</div>
+<img alt="_images/0cb25fa058db167d6f3a723fe650e1bc9137188cf5398d20073c7ef269f585d1.png" src="_images/0cb25fa058db167d6f3a723fe650e1bc9137188cf5398d20073c7ef269f585d1.png" />
+<img alt="_images/05f00a785485947fd3d1eb6b44406e19b8d6e45cfc889fbd889adbaca7244ce2.png" src="_images/05f00a785485947fd3d1eb6b44406e19b8d6e45cfc889fbd889adbaca7244ce2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as RandomForest.pkl
+</pre></div>
+</div>
+<img alt="_images/e130982237420f63ab237884b84e11637b871b5f026668090a0b17a32a5f3d28.png" src="_images/e130982237420f63ab237884b84e11637b871b5f026668090a0b17a32a5f3d28.png" />
+<img alt="_images/762cdc4e1eb2f339a5fe0b18e2e9077dc043912daefb10e46943290d42384afc.png" src="_images/762cdc4e1eb2f339a5fe0b18e2e9077dc043912daefb10e46943290d42384afc.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as RandomForest_with_SMOTE.pkl
+</pre></div>
+</div>
+<img alt="_images/dcea7dd1314a277ae32102d3a9db9bc44abe1f9b82d4fe9e25cf1bacc6c7a7ba.png" src="_images/dcea7dd1314a277ae32102d3a9db9bc44abe1f9b82d4fe9e25cf1bacc6c7a7ba.png" />
+<img alt="_images/2d117c26a88cb057839271f39a0565aefabe1c2eda32adc91ded99b254b70941.png" src="_images/2d117c26a88cb057839271f39a0565aefabe1c2eda32adc91ded99b254b70941.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as XGBoost.pkl
+</pre></div>
+</div>
+<img alt="_images/433f749a83be0d8dcf982372776ddbac1f652c7272347c97939f721845f22d44.png" src="_images/433f749a83be0d8dcf982372776ddbac1f652c7272347c97939f721845f22d44.png" />
+<img alt="_images/7fc3c424175a8c8fc7dd9ec747cb6fc6bfd8f3fce7577ede410ba07efb3647c7.png" src="_images/7fc3c424175a8c8fc7dd9ec747cb6fc6bfd8f3fce7577ede410ba07efb3647c7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model saved as XGBoost_with_SMOTE.pkl
+</pre></div>
+</div>
+<img alt="_images/74ff0afc2a6e79505001d12ec35cfc38615ea087f06a9279a57f226b363c1203.png" src="_images/74ff0afc2a6e79505001d12ec35cfc38615ea087f06a9279a57f226b363c1203.png" />
+<img alt="_images/03c1d9763df4c61a2581f8792e779fb4197167f1eb919b7f59b7f0028ef6785e.png" src="_images/03c1d9763df4c61a2581f8792e779fb4197167f1eb919b7f59b7f0028ef6785e.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>accuracy</th>
+      <th>recall</th>
+      <th>precision</th>
+      <th>f1</th>
+      <th>AUC</th>
+      <th>best_cross_val_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>KNN</th>
+      <td>0.706327</td>
+      <td>0.611364</td>
+      <td>0.657702</td>
+      <td>0.633687</td>
+      <td>0.782879</td>
+      <td>0.642123</td>
+    </tr>
+    <tr>
+      <th>KNN With Smote</th>
+      <td>0.694995</td>
+      <td>0.711364</td>
+      <td>0.614931</td>
+      <td>0.659642</td>
+      <td>0.764921</td>
+      <td>0.676299</td>
+    </tr>
+    <tr>
+      <th>Logistic Regression</th>
+      <td>0.701605</td>
+      <td>0.811364</td>
+      <td>0.605085</td>
+      <td>0.693204</td>
+      <td>0.784397</td>
+      <td>0.687211</td>
+    </tr>
+    <tr>
+      <th>Logistic Regression With Smote</th>
+      <td>0.710104</td>
+      <td>0.763636</td>
+      <td>0.623377</td>
+      <td>0.686415</td>
+      <td>0.781060</td>
+      <td>0.685079</td>
+    </tr>
+    <tr>
+      <th>Random Forest</th>
+      <td>0.726157</td>
+      <td>0.763636</td>
+      <td>0.643678</td>
+      <td>0.698545</td>
+      <td>0.784730</td>
+      <td>0.697048</td>
+    </tr>
+    <tr>
+      <th>Random Forest With Smote</th>
+      <td>0.731822</td>
+      <td>0.756818</td>
+      <td>0.652941</td>
+      <td>0.701053</td>
+      <td>0.789033</td>
+      <td>0.697605</td>
+    </tr>
+    <tr>
+      <th>XGBoost</th>
+      <td>0.678942</td>
+      <td>0.856818</td>
+      <td>0.576453</td>
+      <td>0.689214</td>
+      <td>0.796870</td>
+      <td>0.704833</td>
+    </tr>
+    <tr>
+      <th>XGBoost With Smote</th>
+      <td>0.699717</td>
+      <td>0.822727</td>
+      <td>0.601329</td>
+      <td>0.694818</td>
+      <td>0.791794</td>
+      <td>0.709674</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="codigo-para-cargar-modelos">
+<h3>Código para cargar modelos<a class="headerlink" href="#codigo-para-cargar-modelos" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">joblib</span>
+
+<span class="c1"># Function to load a model</span>
+<span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_filename</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_filename</span><span class="p">)</span>
+
+<span class="c1"># Example usage for each model</span>
+<span class="n">loaded_knn_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;KNN.pkl&#39;</span><span class="p">)</span>
+<span class="n">loaded_knn_with_smote_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;KNN_with_SMOTE.pkl&#39;</span><span class="p">)</span>
+<span class="n">loaded_logistic_regression_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;LogisticRegression.pkl&#39;</span><span class="p">)</span>
+<span class="n">loaded_logistic_regression_with_smote_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;LogisticRegression_with_SMOTE.pkl&#39;</span><span class="p">)</span>
+<span class="n">loaded_random_forest_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;RandomForest.pkl&#39;</span><span class="p">)</span>
+<span class="n">loaded_random_forest_with_smote_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;RandomForest_with_SMOTE.pkl&#39;</span><span class="p">)</span>
+<span class="n">loaded_xgboost_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;XGBoost.pkl&#39;</span><span class="p">)</span>
+<span class="n">loaded_xgboost_with_smote_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;XGBoost_with_SMOTE.pkl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="verificar-la-calidad-del-archivo-pkl-calculando-metricas-de-un-modelo">
+<h3>verificar la calidad del archivo .pkl calculando métricas de un modelo<a class="headerlink" href="#verificar-la-calidad-del-archivo-pkl-calculando-metricas-de-un-modelo" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">loaded_knn_model</span>
+
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">model</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+
+<span class="c1"># Make predictions and calculate metrics</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_pred_probs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="s2">&quot;predict_proba&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+    <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+    <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+    <span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span>
+    <span class="s2">&quot;AUC&quot;</span><span class="p">:</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_probs</span><span class="p">)</span> <span class="k">if</span> <span class="n">y_pred_probs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Calculate ROC Curve and AUC</span>
+<span class="k">if</span> <span class="n">y_pred_probs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_probs</span><span class="p">)</span>
+    <span class="n">roc_auc</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+
+    <span class="c1"># Plot ROC curve</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;ROC curve (area = </span><span class="si">{</span><span class="n">roc_auc</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True Positive Rate&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ROC Curve for </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Plot confusion matrix</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">cm</span><span class="p">)</span>
+<span class="n">disp</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Confusion Matrix for </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/84a8055dd0f663a66b6996dc81ff54b732df373668aee840fd66a59665a3db42.png" src="_images/84a8055dd0f663a66b6996dc81ff54b732df373668aee840fd66a59665a3db42.png" />
+<img alt="_images/a42f0a32a84f82165e172d425eb20b97bf261e23b891eea59918c4c34431585c.png" src="_images/a42f0a32a84f82165e172d425eb20b97bf261e23b891eea59918c4c34431585c.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="churn_prediction_EDA.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>Churn Prediction EDA</strong></p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-imputing-scaling-and-train-test-split">Feature selection, imputing, scaling and train test split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-de-las-variables">Descripción de las variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-all-models-without-hyperparameter-tuning">Testing all models without hyperparameter tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperparameter-tuning">Hyperparameter Tuning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#codigo-para-cargar-modelos">Código para cargar modelos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-la-calidad-del-archivo-pkl-calculando-metricas-de-un-modelo">verificar la calidad del archivo .pkl calculando métricas de un modelo</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Estefany Villanueva, Martín Álvarez
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
