@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'churn_prediction_EDA';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Models Training and Comparison" href="churn_prediction_model_training.html" />
+    <link rel="next" title="Entrenamiento y comparación de modelos" href="churn_prediction_model_training.html" />
     <link rel="prev" title="Visualización de Datos - Proyecto Final" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -159,7 +159,7 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Churn Prediction EDA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="churn_prediction_model_training.html">Models Training and Comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="churn_prediction_model_training.html">Entrenamiento y comparación de modelos</a></li>
 </ul>
 
     </div>
@@ -357,6 +357,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">Verificando supuestos de la prueba chi cuadrado</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado">Aplicar prueba chi cuadrado</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#proceso-de-descarte">Proceso de descarte</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-prueba-chi-cuadrado">Repetir prueba chi-cuadrado</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-proceso-de-descarte">Repetir proceso de descarte</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
@@ -364,6 +369,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif">Eliminar multicolinealidad con Variance Inflation Factor (VIF)</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-de-las-variables">Descripción de las variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo">Análisis con variable objetivo</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">Variables numéricas vs is_churned</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">Variables categóricas vs is_churned</a></li>
@@ -431,8 +437,14 @@ memory usage: 4.5 MB
 </div>
 <section id="reduccion-de-dimensionalidad">
 <h2>Reducción de dimensionalidad<a class="headerlink" href="#reduccion-de-dimensionalidad" title="Permalink to this heading">#</a></h2>
-<p>Se hará una reducción de dimensionalidad con base en la prueba chi-cuadrado. El objetivo principal es identificar y retener solo aquellas variables categóricas que son estadísticamente independientes entre sí.</p>
-<p>Esto se hace utilizando una prueba chi-cuadrado, donde se considera que dos variables son independientes si el valor p de la prueba es mayor que 0.05 (umbral común para significancia estadística).</p>
+<p>Se hará una reducción de dimensionalidad con el objetivo de identificar y retener solo aquellas variables categóricas que son estadísticamente independientes entre sí.</p>
+<p>Se utilizará la prueba de chi-cuadrado, una prueba estadística que se utiliza para determinar si hay una asociación significativa entre dos variables categóricas.</p>
+<p>Esta prueba tiene las siguientes hipotesis:</p>
+<ul class="simple">
+<li><p>Hipótesis Nula (H0): No existe una relación significativa entre las variables (son independientes).</p></li>
+<li><p>Hipótesis Alternativa (H1): Existe una relación significativa entre las variables (son dependientes).</p></li>
+</ul>
+<p>Por lo tanto, se considera que dos variables son independientes si el valor p de la prueba es mayor que 0.05 (umbral común para significancia estadística).</p>
 <section id="variables-categoricas">
 <h3>Variables Categóricas<a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h3>
 <p>Verificar la dimensión del dataframe de variables categóricas</p>
@@ -453,7 +465,7 @@ memory usage: 4.5 MB
 </section>
 <section id="verificando-supuestos-de-la-prueba-chi-cuadrado">
 <h3>Verificando supuestos de la prueba chi cuadrado<a class="headerlink" href="#verificando-supuestos-de-la-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h3>
-<p>Uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica.  Se verificará que cada variable categórica cumpla con este supuesto.</p>
+<p>Uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica.  Se verificará que cada variable categórica cumpla con este supuesto, en otras palabras, que cada clase en las variables categóricas tenga suficientes ocurrencias (al menos 5) para que la prueba chi-cuadrado sea válida.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los conteos de valores</span>
@@ -639,7 +651,6 @@ memory usage: 4.5 MB
 <section id="aplicar-prueba-chi-cuadrado">
 <h4>Aplicar prueba chi cuadrado<a class="headerlink" href="#aplicar-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h4>
 <p>Se procede a hacer pruebas chi cuadrado entre todas las posibles combinaciones de columnas categóricas que quedaron, y se guarda este resultado en un nuevo dataframe.</p>
-<p>Esta prueba es útil para evaluar la independencia estadística entre pares de variables categóricas en un conjunto de datos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
@@ -970,7 +981,9 @@ memory usage: 4.5 MB
 <p>82 rows × 82 columns</p>
 </div></div></div>
 </div>
-<p><strong>Proceso de descarte</strong></p>
+</section>
+<section id="proceso-de-descarte">
+<h4>Proceso de descarte<a class="headerlink" href="#proceso-de-descarte" title="Permalink to this heading">#</a></h4>
 <p>Ahora incia un proceso de selección de variables categóricas basado en la independencia estadística. Se empienzan a descartar todas las que son dependientes.</p>
 <p>Se incia el proceso con todas aquellas que son dependientes a warehouse_Bogota (escogida aleatoriamente entre todas las variables)</p>
 <div class="cell docutils container">
@@ -1192,7 +1205,8 @@ memory usage: 4.5 MB
 </div>
 <p>El resultado evidencia que 12 columnas son independientes a la columna warehouse_Bogota. Se procederá a utilizar otra columna aleatoria para verificar nuevamente independecia y descartar las dependientes.</p>
 <p>Para este proceso se repite la prueba de chi-cuadrado</p>
-<p><strong>Repetir prueba chi-cuadrado</strong></p>
+<section id="repetir-prueba-chi-cuadrado">
+<h5>Repetir prueba chi-cuadrado<a class="headerlink" href="#repetir-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
@@ -1428,7 +1442,9 @@ memory usage: 4.5 MB
 </table>
 </div></div></div>
 </div>
-<p><strong>Repetir proceso de descarte</strong></p>
+</section>
+<section id="repetir-proceso-de-descarte">
+<h5>Repetir proceso de descarte<a class="headerlink" href="#repetir-proceso-de-descarte" title="Permalink to this heading">#</a></h5>
 <p>Después de repetir la prueba de chi-cuadrado se continúa nuevamente con el proceso de descarte. Se repetirá el proceso hasta que las variables sean independientes.</p>
 <p>En esta ocasión se selecciona aleatoriamente la variable ‘sub_categoria_Ambientadores’. Se eliminarán las variables dependientes a esta.</p>
 <div class="cell docutils container">
@@ -1628,7 +1644,7 @@ memory usage: 4.5 MB
 </table>
 </div></div></div>
 </div>
-<p>Después de reptir el proceso, quedan 4 variables. Se procederá a repetir.</p>
+<p>Después de repetir el proceso, quedan 4 variables. Se procederá a repetir.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear una lista de columnas independientes basadas en un valor p umbral</span>
@@ -1814,6 +1830,7 @@ memory usage: 4.5 MB
 </div>
 </section>
 </section>
+</section>
 <section id="variables-numericas">
 <h3>Variables numéricas<a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h3>
 <p>Para las variables numéricas se realiza una matrix de correlación</p>
@@ -1836,6 +1853,7 @@ memory usage: 4.5 MB
 </section>
 <section id="datos-faltantes">
 <h3>Datos faltantes<a class="headerlink" href="#datos-faltantes" title="Permalink to this heading">#</a></h3>
+<p>Antes de iniciar se combinan las variables numéricas y las variables categóricas indepedientes para hacer el tratamietno de los datos faltantes de todas las columnas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se filtran las columnas con las variables numericas, las variables indpendientes y la variable objetivo</span>
@@ -2178,7 +2196,7 @@ memory usage: 4.5 MB
 <img alt="_images/5f4977d97a64cecba3ff2d01fe43a15fafea2dc44dfe1f6218d25ff5feed6a4d.png" src="_images/5f4977d97a64cecba3ff2d01fe43a15fafea2dc44dfe1f6218d25ff5feed6a4d.png" />
 </div>
 </div>
-<p>Se evidencia que hay varias columnas con más del 40% de valores nulos. Se procede a eliminar estas columnas e imputar los datos faltantaes en las demás.</p>
+<p>Se evidencia que hay varias columnas con más del 40% de valores nulos. Se procede a eliminar estas columnas e imputar los datos faltantaes en las demás, por medio del metodo IterativeImputer.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se eliminan columnas con 40% o más de datos faltantes</span>
@@ -2310,13 +2328,13 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Eliminando &#39;unique_vendors_historic&#39; con VIF: 54.064770957302436
-Eliminando &#39;distinct_sku_3m&#39; con VIF: 28.301055802923763
-Eliminando &#39;unique_vendors_last_3m&#39; con VIF: 19.750538287298127
-Eliminando &#39;AOV_3m&#39; con VIF: 11.58528785671016
-Eliminando &#39;order_count_3m&#39; con VIF: 7.454986523068702
-Eliminando &#39;gmv_3m&#39; con VIF: 6.999537999734301
-Eliminando &#39;distinct_sku_historic&#39; con VIF: 6.1489608804132185
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Eliminando &#39;unique_vendors_historic&#39; con VIF: 54.064770957286854
+Eliminando &#39;distinct_sku_3m&#39; con VIF: 28.301055802920917
+Eliminando &#39;unique_vendors_last_3m&#39; con VIF: 19.75053828729514
+Eliminando &#39;AOV_3m&#39; con VIF: 11.585287856711172
+Eliminando &#39;order_count_3m&#39; con VIF: 7.4549865230665855
+Eliminando &#39;gmv_3m&#39; con VIF: 6.999537999734094
+Eliminando &#39;distinct_sku_historic&#39; con VIF: 6.148960880412946
 </pre></div>
 </div>
 </div>
@@ -2338,29 +2356,29 @@ Eliminando &#39;distinct_sku_historic&#39; con VIF: 6.1489608804132185
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                  Variable       VIF
-0                     order_count_historic  2.549589
-1                             gmv_historic  2.290194
-2                             AOV_historic  2.226552
-3                           antiquity_days  4.017303
-4                          visits_count_3m  3.508315
-5                          canceled_orders  1.084789
-6                          tickets_finales  1.103717
-7                         mean_order_lapse  1.736261
-8                       new_skus_within_3m  2.135510
-9                    orders_count_delta_1m  1.410192
-10                            gmv_delta_1m  1.002258
-11                  distinct_skus_delta_1m  1.319025
-12                   orders_count_delta_2m  1.570232
-13                            gmv_delta_2m  1.003790
-14                  distinct_skus_delta_2m  1.456130
-15                        warehouse_Bogota  2.025948
-16             sub_categoria_Ambientadores  1.012302
-17  sub_categoria_Complementos y vitaminas  1.136589
+0                     order_count_historic  2.538594
+1                             gmv_historic  2.297868
+2                             AOV_historic  2.266038
+3                           antiquity_days  3.919358
+4                          visits_count_3m  3.496058
+5                          canceled_orders  1.085613
+6                          tickets_finales  1.103904
+7                         mean_order_lapse  1.815531
+8                       new_skus_within_3m  2.165617
+9                    orders_count_delta_1m  1.552163
+10                            gmv_delta_1m  1.002530
+11                  distinct_skus_delta_1m  1.389377
+12                   orders_count_delta_2m  1.733080
+13                            gmv_delta_2m  1.004155
+14                  distinct_skus_delta_2m  1.563145
+15                        warehouse_Bogota  2.226564
+16             sub_categoria_Ambientadores  1.012305
+17  sub_categoria_Complementos y vitaminas  1.137087
 </pre></div>
 </div>
 </div>
 </div>
-<p>Se evidencia que quedan 17 variables y todas tienen VIF menor a 5.
+<p>Se evidencia que quedan 18 variables y todas tienen VIF menor a 5.
 Este dataframe, agregando la columna de la variable de interés, será utilizado para entregar el modelo de clasificación.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2413,21 +2431,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
   <tbody>
     <tr>
       <th>0</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>150360.000000</td>
       <td>150360.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>8</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>37.061686</td>
+      <td>8.0</td>
+      <td>0.394661</td>
+      <td>9.184905</td>
+      <td>0.672547</td>
+      <td>0.587120</td>
+      <td>8.824533</td>
+      <td>1.065848</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2435,21 +2453,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>1</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>112770.000000</td>
       <td>112770.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>5</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36.597959</td>
+      <td>5.0</td>
+      <td>0.397389</td>
+      <td>9.443032</td>
+      <td>0.657431</td>
+      <td>0.589042</td>
+      <td>8.983728</td>
+      <td>1.044288</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2457,21 +2475,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>2</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>145272.000000</td>
       <td>145272.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>4</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36.557464</td>
+      <td>4.0</td>
+      <td>0.399061</td>
+      <td>9.219884</td>
+      <td>0.664174</td>
+      <td>0.586014</td>
+      <td>8.846169</td>
+      <td>1.035882</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2479,21 +2497,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>3</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>201431.050293</td>
       <td>201431.050293</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>11</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>31.901494</td>
+      <td>11.0</td>
+      <td>0.419787</td>
+      <td>8.834209</td>
+      <td>0.728375</td>
+      <td>0.554929</td>
+      <td>8.608247</td>
+      <td>1.068873</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2501,21 +2519,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>4</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>161276.000000</td>
       <td>161276.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>6</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>32.128614</td>
+      <td>6.0</td>
+      <td>0.420110</td>
+      <td>9.109971</td>
+      <td>0.702869</td>
+      <td>0.561161</td>
+      <td>8.778354</td>
+      <td>1.035359</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2527,6 +2545,31 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 </div>
 <p>Ahora que se tiene el Dataframe completo se realiza una breve descripción de cada una de las variables para comprender los psoteriores análisis exlporatorios</p>
 </section>
+</section>
+<section id="descripcion-de-las-variables">
+<h2>Descripción de las variables<a class="headerlink" href="#descripcion-de-las-variables" title="Permalink to this heading">#</a></h2>
+<p>Nótese que cada registro describe las variables comportamentales de un cliente.</p>
+<ul class="simple">
+<li><p>is_churned: Variable objetivo, 1 indica que el cliente es un cliente actualmente ‘churn’, 0 indica que el cliente no es ‘churn’ en otras palabras está activo.</p></li>
+<li><p>order_count_historic: Conteo histórico de órdenes.</p></li>
+<li><p>gmv_historic: Sumatoria del gmv histórico (Gross Merchandise Value) en COP.</p></li>
+<li><p>AOV_historic: Average order value del cliente.</p></li>
+<li><p>antiquity_days: Días transcurridos desde la primera órden del cliente.</p></li>
+<li><p>visits_count_3m: Conteo de visitas de la empresa al cliente en los tres meses anteriores a su última compra.</p></li>
+<li><p>canceled_orders: Conteo de ordenes canceladas por parte del cliente.</p></li>
+<li><p>tickets_finales: Conteo de tickets abiertos por el cliente. Un ticket es un contacto con customer_service</p></li>
+<li><p>mean_order_lapse: Lapso promedio entre órdenes</p></li>
+<li><p>new_skus_within_3m: Cantidad de productos nuevos que el cliente compró en los tres meses previos a su última órden</p></li>
+<li><p>orders_count_delta_1m: Variación entre el conteo de órdenes del último més de actividad del cliente versus el més anterior. Se calcula como ordenes_ultimo_mes - ordenes_mes_anterior / ordenes_mes_anterior</p></li>
+<li><p>gmv_delta_1m: Variacion en el gmv (ultimo més de actividad)</p></li>
+<li><p>distinct_skus_delta_1m: Variacion en la cantidad de productos que se compra (ultimo més de actividad)</p></li>
+<li><p>orders_count_delta_2m: Variación entre el conteo de órdenes (dos últimos meses de actividad)</p></li>
+<li><p>gmv_delta_2m: Variacion en el gmv (dos últimos meses de actividad)</p></li>
+<li><p>distinct_skus_delta_2m: Variacion en la cantidad de productos que se compra (dos últimos meses de actividad)</p></li>
+<li><p>warehouse_Bogota: El cliente pertenece a la ciudad de Bogotá</p></li>
+<li><p>sub_categoria_Ambientadores: El cliente compra los productos de la sub categoría Ambientadores</p></li>
+<li><p>sub_categoria_Complementos y vitaminas: El cliente compra los productos de la sub categoría Complementos y vitaminas</p></li>
+</ul>
 </section>
 <section id="analisis-con-variable-objetivo">
 <h2>Análisis con variable objetivo<a class="headerlink" href="#analisis-con-variable-objetivo" title="Permalink to this heading">#</a></h2>
@@ -2626,9 +2669,9 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/35565f4af2ad95a0b194b52b8d29bae3ba1100692e10f82989032c9f4e4a3c79.png" src="_images/35565f4af2ad95a0b194b52b8d29bae3ba1100692e10f82989032c9f4e4a3c79.png" />
-<img alt="_images/a29ecb7fd40066681916c2e816b1b864a516c38160969ae1c06b0f8d6ce54fb2.png" src="_images/a29ecb7fd40066681916c2e816b1b864a516c38160969ae1c06b0f8d6ce54fb2.png" />
-<img alt="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" src="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" />
+<img alt="_images/318977a542bc2da7cbc72b165d0038dde43fb8da114c62f2bbd172320ab513fc.png" src="_images/318977a542bc2da7cbc72b165d0038dde43fb8da114c62f2bbd172320ab513fc.png" />
+<img alt="_images/d98c6d1405e71f52b162dfa480c355f9e9ff87ef572a6044dd36e1d8d5ae109c.png" src="_images/d98c6d1405e71f52b162dfa480c355f9e9ff87ef572a6044dd36e1d8d5ae109c.png" />
+<img alt="_images/84852c00f0e0562cc1f77bca8f3027041f231f2a2d2583d5d4944b92da6d86bd.png" src="_images/84852c00f0e0562cc1f77bca8f3027041f231f2a2d2583d5d4944b92da6d86bd.png" />
 </div>
 </div>
 <p>Interpretaciones:</p>
@@ -2686,7 +2729,7 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Models Training and Comparison</p>
+        <p class="prev-next-title">Entrenamiento y comparación de modelos</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -2712,6 +2755,11 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">Verificando supuestos de la prueba chi cuadrado</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado">Aplicar prueba chi cuadrado</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#proceso-de-descarte">Proceso de descarte</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-prueba-chi-cuadrado">Repetir prueba chi-cuadrado</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-proceso-de-descarte">Repetir proceso de descarte</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
@@ -2719,6 +2767,7 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif">Eliminar multicolinealidad con Variance Inflation Factor (VIF)</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-de-las-variables">Descripción de las variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo">Análisis con variable objetivo</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">Variables numéricas vs is_churned</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">Variables categóricas vs is_churned</a></li>
