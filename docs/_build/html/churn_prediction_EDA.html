@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,8 +38,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -65,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'churn_prediction_EDA';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Models Training and Comparison" href="churn_prediction_model_training.html" />
+    <link rel="next" title="Entrenamiento y comparación de modelos" href="churn_prediction_model_training.html" />
     <link rel="prev" title="Visualización de Datos - Proyecto Final" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -77,6 +78,15 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -137,13 +147,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   
+  
     
     
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Proyecto_Final_DataViz - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Proyecto_Final_DataViz - Home"/>`);</script>
   
   
 </a></div>
@@ -159,7 +170,7 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Churn Prediction EDA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="churn_prediction_model_training.html">Models Training and Comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="churn_prediction_model_training.html">Entrenamiento y comparación de modelos</a></li>
 </ul>
 
     </div>
@@ -315,10 +326,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script>
@@ -326,7 +337,7 @@ document.write(`
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
@@ -357,6 +368,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">Verificando supuestos de la prueba chi cuadrado</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado">Aplicar prueba chi cuadrado</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#proceso-de-descarte">Proceso de descarte</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-prueba-chi-cuadrado">Repetir prueba chi-cuadrado</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-proceso-de-descarte">Repetir proceso de descarte</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
@@ -364,6 +380,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif">Eliminar multicolinealidad con Variance Inflation Factor (VIF)</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-de-las-variables">Descripción de las variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo">Análisis con variable objetivo</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">Variables numéricas vs is_churned</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">Variables categóricas vs is_churned</a></li>
@@ -431,8 +448,14 @@ memory usage: 4.5 MB
 </div>
 <section id="reduccion-de-dimensionalidad">
 <h2>Reducción de dimensionalidad<a class="headerlink" href="#reduccion-de-dimensionalidad" title="Permalink to this heading">#</a></h2>
-<p>Se hará una reducción de dimensionalidad con base en la prueba chi-cuadrado. El objetivo principal es identificar y retener solo aquellas variables categóricas que son estadísticamente independientes entre sí.</p>
-<p>Esto se hace utilizando una prueba chi-cuadrado, donde se considera que dos variables son independientes si el valor p de la prueba es mayor que 0.05 (umbral común para significancia estadística).</p>
+<p>Se hará una reducción de dimensionalidad con el objetivo de identificar y retener solo aquellas variables categóricas que son estadísticamente independientes entre sí.</p>
+<p>Se utilizará la prueba de chi-cuadrado, una prueba estadística que se utiliza para determinar si hay una asociación significativa entre dos variables categóricas.</p>
+<p>Esta prueba tiene las siguientes hipotesis:</p>
+<ul class="simple">
+<li><p>Hipótesis Nula (H0): No existe una relación significativa entre las variables (son independientes).</p></li>
+<li><p>Hipótesis Alternativa (H1): Existe una relación significativa entre las variables (son dependientes).</p></li>
+</ul>
+<p>Por lo tanto, se considera que dos variables son independientes si el valor p de la prueba es mayor que 0.05 (umbral común para significancia estadística).</p>
 <section id="variables-categoricas">
 <h3>Variables Categóricas<a class="headerlink" href="#variables-categoricas" title="Permalink to this heading">#</a></h3>
 <p>Verificar la dimensión del dataframe de variables categóricas</p>
@@ -453,7 +476,7 @@ memory usage: 4.5 MB
 </section>
 <section id="verificando-supuestos-de-la-prueba-chi-cuadrado">
 <h3>Verificando supuestos de la prueba chi cuadrado<a class="headerlink" href="#verificando-supuestos-de-la-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h3>
-<p>Uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica.  Se verificará que cada variable categórica cumpla con este supuesto.</p>
+<p>Uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica.  Se verificará que cada variable categórica cumpla con este supuesto, en otras palabras, que cada clase en las variables categóricas tenga suficientes ocurrencias (al menos 5) para que la prueba chi-cuadrado sea válida.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los conteos de valores</span>
@@ -639,7 +662,6 @@ memory usage: 4.5 MB
 <section id="aplicar-prueba-chi-cuadrado">
 <h4>Aplicar prueba chi cuadrado<a class="headerlink" href="#aplicar-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h4>
 <p>Se procede a hacer pruebas chi cuadrado entre todas las posibles combinaciones de columnas categóricas que quedaron, y se guarda este resultado en un nuevo dataframe.</p>
-<p>Esta prueba es útil para evaluar la independencia estadística entre pares de variables categóricas en un conjunto de datos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
@@ -970,7 +992,9 @@ memory usage: 4.5 MB
 <p>82 rows × 82 columns</p>
 </div></div></div>
 </div>
-<p><strong>Proceso de descarte</strong></p>
+</section>
+<section id="proceso-de-descarte">
+<h4>Proceso de descarte<a class="headerlink" href="#proceso-de-descarte" title="Permalink to this heading">#</a></h4>
 <p>Ahora incia un proceso de selección de variables categóricas basado en la independencia estadística. Se empienzan a descartar todas las que son dependientes.</p>
 <p>Se incia el proceso con todas aquellas que son dependientes a warehouse_Bogota (escogida aleatoriamente entre todas las variables)</p>
 <div class="cell docutils container">
@@ -1192,7 +1216,8 @@ memory usage: 4.5 MB
 </div>
 <p>El resultado evidencia que 12 columnas son independientes a la columna warehouse_Bogota. Se procederá a utilizar otra columna aleatoria para verificar nuevamente independecia y descartar las dependientes.</p>
 <p>Para este proceso se repite la prueba de chi-cuadrado</p>
-<p><strong>Repetir prueba chi-cuadrado</strong></p>
+<section id="repetir-prueba-chi-cuadrado">
+<h5>Repetir prueba chi-cuadrado<a class="headerlink" href="#repetir-prueba-chi-cuadrado" title="Permalink to this heading">#</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un DataFrame vacío para almacenar los valores p</span>
@@ -1428,7 +1453,9 @@ memory usage: 4.5 MB
 </table>
 </div></div></div>
 </div>
-<p><strong>Repetir proceso de descarte</strong></p>
+</section>
+<section id="repetir-proceso-de-descarte">
+<h5>Repetir proceso de descarte<a class="headerlink" href="#repetir-proceso-de-descarte" title="Permalink to this heading">#</a></h5>
 <p>Después de repetir la prueba de chi-cuadrado se continúa nuevamente con el proceso de descarte. Se repetirá el proceso hasta que las variables sean independientes.</p>
 <p>En esta ocasión se selecciona aleatoriamente la variable ‘sub_categoria_Ambientadores’. Se eliminarán las variables dependientes a esta.</p>
 <div class="cell docutils container">
@@ -1628,7 +1655,7 @@ memory usage: 4.5 MB
 </table>
 </div></div></div>
 </div>
-<p>Después de reptir el proceso, quedan 4 variables. Se procederá a repetir.</p>
+<p>Después de repetir el proceso, quedan 4 variables. Se procederá a repetir.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear una lista de columnas independientes basadas en un valor p umbral</span>
@@ -1814,6 +1841,7 @@ memory usage: 4.5 MB
 </div>
 </section>
 </section>
+</section>
 <section id="variables-numericas">
 <h3>Variables numéricas<a class="headerlink" href="#variables-numericas" title="Permalink to this heading">#</a></h3>
 <p>Para las variables numéricas se realiza una matrix de correlación</p>
@@ -1836,6 +1864,7 @@ memory usage: 4.5 MB
 </section>
 <section id="datos-faltantes">
 <h3>Datos faltantes<a class="headerlink" href="#datos-faltantes" title="Permalink to this heading">#</a></h3>
+<p>Antes de iniciar se combinan las variables numéricas y las variables categóricas indepedientes para hacer el tratamietno de los datos faltantes de todas las columnas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se filtran las columnas con las variables numericas, las variables indpendientes y la variable objetivo</span>
@@ -2178,12 +2207,40 @@ memory usage: 4.5 MB
 <img alt="_images/5f4977d97a64cecba3ff2d01fe43a15fafea2dc44dfe1f6218d25ff5feed6a4d.png" src="_images/5f4977d97a64cecba3ff2d01fe43a15fafea2dc44dfe1f6218d25ff5feed6a4d.png" />
 </div>
 </div>
-<p>Se evidencia que hay varias columnas con más del 40% de valores nulos. Se procede a eliminar estas columnas e imputar los datos faltantaes en las demás.</p>
+<p>Se evidencia que hay varias columnas con más del 40% de valores nulos. Se procede a eliminar estas columnas e imputar los datos faltantaes en las demás, por medio del metodo IterativeImputer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_reduction</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;order_count_3m&#39;, &#39;order_count_historic&#39;, &#39;distinct_sku_3m&#39;,
+       &#39;distinct_sku_historic&#39;, &#39;gmv_3m&#39;, &#39;gmv_historic&#39;,
+       &#39;unique_vendors_last_3m&#39;, &#39;unique_vendors_historic&#39;, &#39;AOV_3m&#39;,
+       &#39;AOV_historic&#39;, &#39;antiquity_days&#39;, &#39;visits_count_3m&#39;, &#39;canceled_orders&#39;,
+       &#39;tickets_finales&#39;, &#39;mean_order_lapse&#39;, &#39;new_skus_within_3m&#39;,
+       &#39;orders_count_delta_1m&#39;, &#39;gmv_delta_1m&#39;, &#39;distinct_skus_delta_1m&#39;,
+       &#39;total_discount_delta_1m&#39;, &#39;orders_count_delta_2m&#39;, &#39;gmv_delta_2m&#39;,
+       &#39;distinct_skus_delta_2m&#39;, &#39;total_discount_delta_2m&#39;,
+       &#39;orders_count_delta_3m&#39;, &#39;gmv_delta_3m&#39;, &#39;distinct_skus_delta_3m&#39;,
+       &#39;total_discount_delta_3m&#39;, &#39;warehouse_Bogota&#39;,
+       &#39;sub_categoria_Ambientadores&#39;,
+       &#39;sub_categoria_Complementos y vitaminas&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se eliminan columnas con 40% o más de datos faltantes</span>
 <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_reduction</span><span class="p">)</span>
 <span class="n">df_reduction</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">thresh</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;warehouse_Bogota&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Ambientadores&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_reduction</span><span class="p">[</span><span class="s1">&#39;sub_categoria_Complementos y vitaminas&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># imputando datos con IterativeImputer</span>
 <span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_iterative_imputer</span>
@@ -2254,31 +2311,31 @@ dtype: int64
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                  Variable        VIF
-0                           order_count_3m   8.689462
-1                     order_count_historic   7.071149
-2                          distinct_sku_3m  43.065298
-3                    distinct_sku_historic  32.620615
-4                                   gmv_3m   9.101740
-5                             gmv_historic   7.413111
-6                   unique_vendors_last_3m  40.503112
-7                  unique_vendors_historic  54.064771
-8                                   AOV_3m  12.851760
-9                             AOV_historic  10.828574
-10                          antiquity_days   8.954980
-11                         visits_count_3m   3.974091
+0                           order_count_3m   8.688979
+1                     order_count_historic   7.070994
+2                          distinct_sku_3m  43.064549
+3                    distinct_sku_historic  32.619355
+4                                   gmv_3m   9.101828
+5                             gmv_historic   7.413099
+6                   unique_vendors_last_3m  40.502155
+7                  unique_vendors_historic  54.066585
+8                                   AOV_3m  12.851747
+9                             AOV_historic  10.828575
+10                          antiquity_days   8.955387
+11                         visits_count_3m   3.973951
 12                         canceled_orders   1.086600
-13                         tickets_finales   1.116142
-14                        mean_order_lapse   1.937464
-15                      new_skus_within_3m  15.590733
-16                   orders_count_delta_1m   1.556624
+13                         tickets_finales   1.116143
+14                        mean_order_lapse   1.937532
+15                      new_skus_within_3m  15.590943
+16                   orders_count_delta_1m   1.556740
 17                            gmv_delta_1m   1.004878
-18                  distinct_skus_delta_1m   1.394153
-19                   orders_count_delta_2m   1.797562
+18                  distinct_skus_delta_1m   1.394156
+19                   orders_count_delta_2m   1.797739
 20                            gmv_delta_2m   1.004484
-21                  distinct_skus_delta_2m   1.574238
-22                        warehouse_Bogota   2.457776
-23             sub_categoria_Ambientadores   1.036683
-24  sub_categoria_Complementos y vitaminas   1.211284
+21                  distinct_skus_delta_2m   1.574242
+22                        warehouse_Bogota   2.456456
+23             sub_categoria_Ambientadores   1.036628
+24  sub_categoria_Complementos y vitaminas   1.210876
 </pre></div>
 </div>
 </div>
@@ -2310,13 +2367,13 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Eliminando &#39;unique_vendors_historic&#39; con VIF: 54.064770957302436
-Eliminando &#39;distinct_sku_3m&#39; con VIF: 28.301055802923763
-Eliminando &#39;unique_vendors_last_3m&#39; con VIF: 19.750538287298127
-Eliminando &#39;AOV_3m&#39; con VIF: 11.58528785671016
-Eliminando &#39;order_count_3m&#39; con VIF: 7.454986523068702
-Eliminando &#39;gmv_3m&#39; con VIF: 6.999537999734301
-Eliminando &#39;distinct_sku_historic&#39; con VIF: 6.1489608804132185
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Eliminando &#39;unique_vendors_historic&#39; con VIF: 54.06658477610348
+Eliminando &#39;distinct_sku_3m&#39; con VIF: 28.299887631146877
+Eliminando &#39;unique_vendors_last_3m&#39; con VIF: 19.75018533163974
+Eliminando &#39;AOV_3m&#39; con VIF: 11.585235427440276
+Eliminando &#39;order_count_3m&#39; con VIF: 7.454568774133248
+Eliminando &#39;gmv_3m&#39; con VIF: 6.999579855288037
+Eliminando &#39;distinct_sku_historic&#39; con VIF: 6.147977956905839
 </pre></div>
 </div>
 </div>
@@ -2338,29 +2395,29 @@ Eliminando &#39;distinct_sku_historic&#39; con VIF: 6.1489608804132185
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                  Variable       VIF
-0                     order_count_historic  2.549589
-1                             gmv_historic  2.290194
-2                             AOV_historic  2.226552
-3                           antiquity_days  4.017303
-4                          visits_count_3m  3.508315
-5                          canceled_orders  1.084789
-6                          tickets_finales  1.103717
-7                         mean_order_lapse  1.736261
-8                       new_skus_within_3m  2.135510
-9                    orders_count_delta_1m  1.410192
-10                            gmv_delta_1m  1.002258
-11                  distinct_skus_delta_1m  1.319025
-12                   orders_count_delta_2m  1.570232
-13                            gmv_delta_2m  1.003790
-14                  distinct_skus_delta_2m  1.456130
-15                        warehouse_Bogota  2.025948
-16             sub_categoria_Ambientadores  1.012302
-17  sub_categoria_Complementos y vitaminas  1.136589
+0                     order_count_historic  2.538632
+1                             gmv_historic  2.297792
+2                             AOV_historic  2.266026
+3                           antiquity_days  3.919277
+4                          visits_count_3m  3.495722
+5                          canceled_orders  1.085612
+6                          tickets_finales  1.103906
+7                         mean_order_lapse  1.815604
+8                       new_skus_within_3m  2.165187
+9                    orders_count_delta_1m  1.552284
+10                            gmv_delta_1m  1.002530
+11                  distinct_skus_delta_1m  1.389381
+12                   orders_count_delta_2m  1.733247
+13                            gmv_delta_2m  1.004154
+14                  distinct_skus_delta_2m  1.563153
+15                        warehouse_Bogota  2.225545
+16             sub_categoria_Ambientadores  1.012280
+17  sub_categoria_Complementos y vitaminas  1.136851
 </pre></div>
 </div>
 </div>
 </div>
-<p>Se evidencia que quedan 17 variables y todas tienen VIF menor a 5.
+<p>Se evidencia que quedan 18 variables y todas tienen VIF menor a 5.
 Este dataframe, agregando la columna de la variable de interés, será utilizado para entregar el modelo de clasificación.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2413,21 +2470,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
   <tbody>
     <tr>
       <th>0</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>150360.000000</td>
       <td>150360.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>8</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>37.061744</td>
+      <td>8.0</td>
+      <td>0.394755</td>
+      <td>9.184905</td>
+      <td>0.672752</td>
+      <td>0.587277</td>
+      <td>8.824533</td>
+      <td>1.065793</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2435,21 +2492,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>1</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>112770.000000</td>
       <td>112770.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>5</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36.598017</td>
+      <td>5.0</td>
+      <td>0.397481</td>
+      <td>9.443032</td>
+      <td>0.657633</td>
+      <td>0.589196</td>
+      <td>8.983728</td>
+      <td>1.044235</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2457,21 +2514,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>2</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>145272.000000</td>
       <td>145272.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>4</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>36.557525</td>
+      <td>4.0</td>
+      <td>0.399154</td>
+      <td>9.219884</td>
+      <td>0.664377</td>
+      <td>0.586169</td>
+      <td>8.846169</td>
+      <td>1.035832</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2479,21 +2536,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>3</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>201431.050293</td>
       <td>201431.050293</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>11</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>31.901561</td>
+      <td>11.0</td>
+      <td>0.419879</td>
+      <td>8.834209</td>
+      <td>0.728574</td>
+      <td>0.555080</td>
+      <td>8.608247</td>
+      <td>1.068811</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2501,21 +2558,21 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
     </tr>
     <tr>
       <th>4</th>
-      <td>1</td>
+      <td>1.0</td>
       <td>161276.000000</td>
       <td>161276.000000</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>17.095455</td>
-      <td>6</td>
       <td>0.0</td>
-      <td>0.223456</td>
-      <td>0.181818</td>
-      <td>0.058824</td>
-      <td>0.211494</td>
-      <td>0.198953</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>32.128682</td>
+      <td>6.0</td>
+      <td>0.420202</td>
+      <td>9.109971</td>
+      <td>0.703066</td>
+      <td>0.561311</td>
+      <td>8.778354</td>
+      <td>1.035302</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -2527,6 +2584,31 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 </div>
 <p>Ahora que se tiene el Dataframe completo se realiza una breve descripción de cada una de las variables para comprender los psoteriores análisis exlporatorios</p>
 </section>
+</section>
+<section id="descripcion-de-las-variables">
+<h2>Descripción de las variables<a class="headerlink" href="#descripcion-de-las-variables" title="Permalink to this heading">#</a></h2>
+<p>Nótese que cada registro describe las variables comportamentales de un cliente.</p>
+<ul class="simple">
+<li><p>is_churned: Variable objetivo, 1 indica que el cliente es un cliente actualmente ‘churn’, 0 indica que el cliente no es ‘churn’ en otras palabras está activo.</p></li>
+<li><p>order_count_historic: Conteo histórico de órdenes.</p></li>
+<li><p>gmv_historic: Sumatoria del gmv histórico (Gross Merchandise Value) en COP.</p></li>
+<li><p>AOV_historic: Average order value del cliente.</p></li>
+<li><p>antiquity_days: Días transcurridos desde la primera órden del cliente.</p></li>
+<li><p>visits_count_3m: Conteo de visitas de la empresa al cliente en los tres meses anteriores a su última compra.</p></li>
+<li><p>canceled_orders: Conteo de ordenes canceladas por parte del cliente.</p></li>
+<li><p>tickets_finales: Conteo de tickets abiertos por el cliente. Un ticket es un contacto con customer_service</p></li>
+<li><p>mean_order_lapse: Lapso promedio entre órdenes</p></li>
+<li><p>new_skus_within_3m: Cantidad de productos nuevos que el cliente compró en los tres meses previos a su última órden</p></li>
+<li><p>orders_count_delta_1m: Variación entre el conteo de órdenes del último més de actividad del cliente versus el més anterior. Se calcula como ordenes_ultimo_mes - ordenes_mes_anterior / ordenes_mes_anterior</p></li>
+<li><p>gmv_delta_1m: Variacion en el gmv (ultimo més de actividad)</p></li>
+<li><p>distinct_skus_delta_1m: Variacion en la cantidad de productos que se compra (ultimo més de actividad)</p></li>
+<li><p>orders_count_delta_2m: Variación entre el conteo de órdenes (dos últimos meses de actividad)</p></li>
+<li><p>gmv_delta_2m: Variacion en el gmv (dos últimos meses de actividad)</p></li>
+<li><p>distinct_skus_delta_2m: Variacion en la cantidad de productos que se compra (dos últimos meses de actividad)</p></li>
+<li><p>warehouse_Bogota: El cliente pertenece a la ciudad de Bogotá</p></li>
+<li><p>sub_categoria_Ambientadores: El cliente compra los productos de la sub categoría Ambientadores</p></li>
+<li><p>sub_categoria_Complementos y vitaminas: El cliente compra los productos de la sub categoría Complementos y vitaminas</p></li>
+</ul>
 </section>
 <section id="analisis-con-variable-objetivo">
 <h2>Análisis con variable objetivo<a class="headerlink" href="#analisis-con-variable-objetivo" title="Permalink to this heading">#</a></h2>
@@ -2543,7 +2625,7 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5a352eed86219c16af0a9f501c2fa2da0c5c0b15e2803ee2528b1903eea97fa1.png" src="_images/5a352eed86219c16af0a9f501c2fa2da0c5c0b15e2803ee2528b1903eea97fa1.png" />
+<img alt="_images/cf8c28fc9903da5a0f55bde7b2a34df61d65b0a7da0fc37311ef25133078c145.png" src="_images/cf8c28fc9903da5a0f55bde7b2a34df61d65b0a7da0fc37311ef25133078c145.png" />
 </div>
 </div>
 <p>Se evidencia que hay un desbalance notable en las clases de la variable objetivo</p>
@@ -2566,27 +2648,27 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/989f9e8313d2a4afc67842ae1b9dedb4aa2072deea8ac1bbf5e8d46df7961cf0.png" src="_images/989f9e8313d2a4afc67842ae1b9dedb4aa2072deea8ac1bbf5e8d46df7961cf0.png" />
-<img alt="_images/12b8062049928348fd506734091e8a946f0267741420eb5a53d3083bb38fa8af.png" src="_images/12b8062049928348fd506734091e8a946f0267741420eb5a53d3083bb38fa8af.png" />
-<img alt="_images/f323fb850355bccd018b4d02e837adf8cd95085e860a33fc17715c91a940de38.png" src="_images/f323fb850355bccd018b4d02e837adf8cd95085e860a33fc17715c91a940de38.png" />
-<img alt="_images/0945e5b36ecaaedf0c7c3f60791b1ae91093daac2dc0a70c457a2b3650aa3718.png" src="_images/0945e5b36ecaaedf0c7c3f60791b1ae91093daac2dc0a70c457a2b3650aa3718.png" />
-<img alt="_images/57204c9e66c0af088b634590dc01b18cbf6f4433690015b7fcb42c4e3ab5fec7.png" src="_images/57204c9e66c0af088b634590dc01b18cbf6f4433690015b7fcb42c4e3ab5fec7.png" />
-<img alt="_images/5cf90c5a6c2ae74f55e1d45d601f566014d834f70c509ca77466df4a8b112bdc.png" src="_images/5cf90c5a6c2ae74f55e1d45d601f566014d834f70c509ca77466df4a8b112bdc.png" />
-<img alt="_images/09a98a3d536195777c31097141117dd32baa32ce44590b409f0124d3234d175a.png" src="_images/09a98a3d536195777c31097141117dd32baa32ce44590b409f0124d3234d175a.png" />
-<img alt="_images/499413df2ad6fd7ea726adaffdd5cf455b85e3fabc7f5f79232bb8018f83551f.png" src="_images/499413df2ad6fd7ea726adaffdd5cf455b85e3fabc7f5f79232bb8018f83551f.png" />
-<img alt="_images/5a8565cbccf961ab2d3e1400255325b0981b0bc8a19f8450877a7842ab693ede.png" src="_images/5a8565cbccf961ab2d3e1400255325b0981b0bc8a19f8450877a7842ab693ede.png" />
-<img alt="_images/fb380c4b767e7f6fc93156dd64c09be7ed84e1950f7286e2995638e2e70f445a.png" src="_images/fb380c4b767e7f6fc93156dd64c09be7ed84e1950f7286e2995638e2e70f445a.png" />
-<img alt="_images/ae600f94ef6d0892e82682c7b7afa25ea64b01db9fc60760fe218d4bfa39ab95.png" src="_images/ae600f94ef6d0892e82682c7b7afa25ea64b01db9fc60760fe218d4bfa39ab95.png" />
-<img alt="_images/38a846bac24c009001f43b4781153589bcaff7120481f8cf25bea81f108a0ecb.png" src="_images/38a846bac24c009001f43b4781153589bcaff7120481f8cf25bea81f108a0ecb.png" />
-<img alt="_images/29ef3bb60f23d4af66cb995a0c842be1b510e2eeafa5ef2da336b2e4fcd4df84.png" src="_images/29ef3bb60f23d4af66cb995a0c842be1b510e2eeafa5ef2da336b2e4fcd4df84.png" />
-<img alt="_images/977eedf7ac2671dbb68e1ab9ae321499b2d2b134ee55d6ab440d6eae20a5031b.png" src="_images/977eedf7ac2671dbb68e1ab9ae321499b2d2b134ee55d6ab440d6eae20a5031b.png" />
-<img alt="_images/d346508f979156868c9001b65ebff5cf01fb890fd32c71750ac7c999d44c1c8c.png" src="_images/d346508f979156868c9001b65ebff5cf01fb890fd32c71750ac7c999d44c1c8c.png" />
+<img alt="_images/69e533045af5c9fc8e2041a183f52e9f3db2f7ed067d2eebfa1a30cd3280f361.png" src="_images/69e533045af5c9fc8e2041a183f52e9f3db2f7ed067d2eebfa1a30cd3280f361.png" />
+<img alt="_images/46a9aa889955a663c3cdc16a0ab0290ebddbd4207296ef2c7f72686d34efab70.png" src="_images/46a9aa889955a663c3cdc16a0ab0290ebddbd4207296ef2c7f72686d34efab70.png" />
+<img alt="_images/46c65292832a4cf1e075853dd62991c52e4e7492d415d6618c9d3802483d47c5.png" src="_images/46c65292832a4cf1e075853dd62991c52e4e7492d415d6618c9d3802483d47c5.png" />
+<img alt="_images/c4c8f98a62c3c841f13d67c250e8ef2cc8ae45dea873b5c5041293783dde3327.png" src="_images/c4c8f98a62c3c841f13d67c250e8ef2cc8ae45dea873b5c5041293783dde3327.png" />
+<img alt="_images/80f42593234b0405b508f1c7bfe512bc6ea4d5b6778cd49799d7fdd5ee2d5022.png" src="_images/80f42593234b0405b508f1c7bfe512bc6ea4d5b6778cd49799d7fdd5ee2d5022.png" />
+<img alt="_images/35946af22e6a13f80fa7f0e46c791debb910615d47e4498b18aed64e9209fac7.png" src="_images/35946af22e6a13f80fa7f0e46c791debb910615d47e4498b18aed64e9209fac7.png" />
+<img alt="_images/b6343433e3e45ff6b75e013fdb4e6f1e7145863b14092bf04c85c83d710b4379.png" src="_images/b6343433e3e45ff6b75e013fdb4e6f1e7145863b14092bf04c85c83d710b4379.png" />
+<img alt="_images/958fc1a83071323db503320134872fa7609acce8f0e14a3a50ea99ef66c185fb.png" src="_images/958fc1a83071323db503320134872fa7609acce8f0e14a3a50ea99ef66c185fb.png" />
+<img alt="_images/34cc366b3893090106dcee75ad00c6aa054c5e6f87e82706cc281beeefe503fe.png" src="_images/34cc366b3893090106dcee75ad00c6aa054c5e6f87e82706cc281beeefe503fe.png" />
+<img alt="_images/376718af3e276ffcda2b0d16cf20b9c4a1835d9b4cc8a6ab6c4b8abd337dfb7d.png" src="_images/376718af3e276ffcda2b0d16cf20b9c4a1835d9b4cc8a6ab6c4b8abd337dfb7d.png" />
+<img alt="_images/6ae9c5fcfe9ac979cd032605e1f066a2e2325b0862fe5718f3743c5829fa9f8e.png" src="_images/6ae9c5fcfe9ac979cd032605e1f066a2e2325b0862fe5718f3743c5829fa9f8e.png" />
+<img alt="_images/5044da3235ee89f57066dd04ff5d0d8018db5d5c46218ba6e89d2b42f61e6b60.png" src="_images/5044da3235ee89f57066dd04ff5d0d8018db5d5c46218ba6e89d2b42f61e6b60.png" />
+<img alt="_images/83420b61294dfe65f72b8c3609fbcc9e12e3f67dac5ee60fb4ebd268a7f56da2.png" src="_images/83420b61294dfe65f72b8c3609fbcc9e12e3f67dac5ee60fb4ebd268a7f56da2.png" />
+<img alt="_images/7da2f96441c3e0f5149f998bd5adb6b94bb24add6268591b8511545126007e9c.png" src="_images/7da2f96441c3e0f5149f998bd5adb6b94bb24add6268591b8511545126007e9c.png" />
+<img alt="_images/b42b9f5909dbcc7b7cb28851d3d0de6cd196218d83464056cc2c3b46182da437.png" src="_images/b42b9f5909dbcc7b7cb28851d3d0de6cd196218d83464056cc2c3b46182da437.png" />
 </div>
 </div>
 <p>Interpretaciones:</p>
 <ul class="simple">
 <li><p>Se evidencia que hay variables cuya dispersión es significativamente distinta en cada clase de la variable ‘is_churned’, como es el caso de ‘new_skus_within_3m’, ‘mean_order_lapse’ y ‘visit_count_3m’.</p></li>
-<li><p>Hay variables cuyos valores son cero en su gran mayoría, y los valores distintos a cero, son considerados atípicos (los datos atípicos están omitidos en estos boxplot, por eso no se ve nada distinto a cero) . Este es el caso de ‘tickets_finales’ y ‘canceled_orders’, lo cuál quiere decir que la gran mayoría de clientes nunca ha contactado a servicio al cliente, ni ha cancelado una órden. Pero las pocas veces que esto se da, puede ser un claro indicio que el cliente está en riesgo de abandonar la compañía</p></li>
+<li><p>Hay variables cuyos valores son cero en su gran mayoría, y los valores distintos a cero, son considerados atípicos (los datos atípicos están omitidos en estos boxplot, por eso no se ve observa nada distinto a cero); este es el caso de ‘tickets_finales’ y ‘canceled_orders’. Esta situación plantea que la gran mayoría de clientes nunca ha contactado a servicio al cliente, ni ha cancelado una órden, pero en los casos que ocurre puede ser un indicio de churn.</p></li>
 <li><p>Hay otras variables cuya dispersión en ambas clases de la variable objetivo parece ser bastante parecida, tales como lo son ‘AOV’ y casi todas las variables que calculan un ‘Delta’</p></li>
 <li><p>Se puede ver también que en general, los clientes no churn tienden a tener mayor antiguedad que aquellos que sí son churn, lo cuál podría sonar intuitivo pero que al final es contrastado con la información.</p></li>
 </ul>
@@ -2626,7 +2708,7 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/35565f4af2ad95a0b194b52b8d29bae3ba1100692e10f82989032c9f4e4a3c79.png" src="_images/35565f4af2ad95a0b194b52b8d29bae3ba1100692e10f82989032c9f4e4a3c79.png" />
+<img alt="_images/017eaccf900e6213e028bc06365b87385c5426739112142f88f46eca4480f94e.png" src="_images/017eaccf900e6213e028bc06365b87385c5426739112142f88f46eca4480f94e.png" />
 <img alt="_images/a29ecb7fd40066681916c2e816b1b864a516c38160969ae1c06b0f8d6ce54fb2.png" src="_images/a29ecb7fd40066681916c2e816b1b864a516c38160969ae1c06b0f8d6ce54fb2.png" />
 <img alt="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" src="_images/e9829bb6a2f0d002be7ba929b1f1af9cb14afe73e3e53b088257191dc14de823.png" />
 </div>
@@ -2634,7 +2716,7 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <p>Interpretaciones:</p>
 <ul class="simple">
 <li><p>Se puede observar entonces una diferencia significativa en la proporción de la variable warehouse_bogota entre las clases de la variable objetivo ‘is_churned’</p></li>
-<li><p>No siendo así con la variable sub_categoria_ambientadores, cuya proporción varía mucho entre cada clase de la variable objetivo</p></li>
+<li><p>No siendo así con la variable sub_categoria_ambientadores, cuya proporción no varía mucho entre cada clase de la variable objetivo</p></li>
 <li><p>Para la última variable categórica ‘Sub_categoria_complementos_y_vitaminas’, la diferencia de proporciones en cada clase de la variable objetivo fluctúa ligeramente</p></li>
 </ul>
 </section>
@@ -2666,11 +2748,10 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 
               
               
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="intro.html"
@@ -2686,14 +2767,11 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Models Training and Comparison</p>
+        <p class="prev-next-title">Entrenamiento y comparación de modelos</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -2712,6 +2790,11 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas">Variables Categóricas</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificando-supuestos-de-la-prueba-chi-cuadrado">Verificando supuestos de la prueba chi cuadrado</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicar-prueba-chi-cuadrado">Aplicar prueba chi cuadrado</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#proceso-de-descarte">Proceso de descarte</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-prueba-chi-cuadrado">Repetir prueba chi-cuadrado</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#repetir-proceso-de-descarte">Repetir proceso de descarte</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas">Variables numéricas</a></li>
@@ -2719,6 +2802,7 @@ Este dataframe, agregando la columna de la variable de interés, será utilizado
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminar-multicolinealidad-con-variance-inflation-factor-vif">Eliminar multicolinealidad con Variance Inflation Factor (VIF)</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#descripcion-de-las-variables">Descripción de las variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-con-variable-objetivo">Análisis con variable objetivo</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-numericas-vs-is-churned">Variables numéricas vs is_churned</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-categoricas-vs-is-churned">Variables categóricas vs is_churned</a></li>
@@ -2771,8 +2855,8 @@ By Estefany Villanueva, Martín Álvarez
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
 
   <footer class="bd-footer">
   </footer>

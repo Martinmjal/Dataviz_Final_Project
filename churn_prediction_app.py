@@ -267,8 +267,8 @@ def render_content(tab):
                 value= [col for col in categorical_cols if col not in ['is_churned_label', 'is_churned', 'customer_id']][0]  # set the default value to the first column (excluding 'is_churned')
             ),
             html.Div([
-                html.Div([dcc.Graph(figure=fig1)], style=styles['graph_container']),  # Graph for churn count
-                html.Div([dcc.Graph(id='bar-chart')], style=styles['graph_container'])  # Graph for categorical comparison
+                html.Div([dcc.Graph(id='bar-chart')], style=styles['graph_container']), # Graph for categorical comparison
+                html.Div([dcc.Graph(figure=fig1)], style=styles['graph_container'])  # Graph for churn count
             ], style={'display': 'flex'})  # This ensures the two graphs are side by side
         ])
 

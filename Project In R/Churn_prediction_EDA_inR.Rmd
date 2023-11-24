@@ -1,0 +1,476 @@
+---
+title: "EDA_Proyecto_Final"
+author: "Martin Alvarez, Estefany Villanueva"
+date: "2023-11-14"
+output: html_document
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+# Análisis exploratorio
+
+Importar y visualizar dataset
+
+```{r}
+df <- read.csv('churn_prediction_features.csv')
+str(df)
+```
+
+## Determinar cuáles columnas son numéricas o categóricas
+
+### Variables categóricas
+
+Utilizando expresiones regulares, se buscan columnas cuyo nombre empiece por "sub_categoria_" & "warehouse_", posteriormente se agregan otras columnas que corresponden a variables categóricas
+
+```{r}
+categorical_cols <- names(df)[grepl("^sub_categoria_|^warehouse_", names(df))]
+categorical_cols <- c(categorical_cols, 'customer_id', 'has_churned_before', 'is_churned')
+```
+
+### Variables numéricas
+
+Se toman las columnas del dataframe 'df' que no están en el vector de columnas categóricas
+
+```{r}
+numerical_cols <- setdiff(names(df), categorical_cols)
+```
+
+## Reducción de dimensionalidad
+
+### Reducción de Variables categóricas
+
+Se verifica entonces la dimensión del dataframe de variables categóricas, eliminando la columna customer_id
+
+```{r}
+df_categoricals = subset(df, select = categorical_cols)
+df_categoricals <- df_categoricals[, !(names(df_categoricals) %in% c("customer_id"))]
+
+df_categoricals <- df_categoricals[-c(4168, 4713), ]
+
+dim(df_categoricals)
+```
+
+En total hay 83 columnas categóricas. Se realizarán pruebas de independecia en estas 83 columnas categóricas. 
+
+### Verificando supuestos de la prueba chi cuadrado
+
+Uno de los supuestos indica que debe haber almenos cinco ocurrencias de cada clase para cada variable categórica.  Se verificará que cada variable categórica cumpla con este supuesto.
+
+```{r}
+# Inicializa un dataframe para almacenar los resultados
+resultados <- data.frame(column_name = character(), negative_class = integer(), positive_class = integer())
+
+# Calcula los conteos para cada columna
+for (column_name in names(df_categoricals)) {
+  positive_count <- sum(df_categoricals[[column_name]] == 1)
+  negative_count <- sum(df_categoricals[[column_name]] == 0)
+  
+  # Añade los resultados al dataframe
+  resultados <- rbind(resultados, data.frame(column_name, negative_class = negative_count, positive_class = positive_count))
+}
+
+library(knitr)
+kable(head(resultados), caption = "Conteo de classes por variable")
+```
+
+Determinar categorías con menos de 5 registros en la clase negativa:
+
+```{r}
+resultados %>% filter(negative_class < 5)
+```
+
+Determinar categorías con menos de 5 registros en la clase positiva:
+
+```{r}
+resultados %>% filter(positive_class < 5)
+```
+
+En la clase negativa no resultó ninguna categoría, pero en la positiva se tiene "sub_categoria_Detergentes y jabones". Se procederá a excluir esta categoría de la prueba. 
+
+```{r}
+df_categoricals <- df_categoricals[, !(names(df_categoricals) %in% c("sub_categoria_Detergentes.y.jabones"))]
+```
+
+### Aplicar prueba chi cuadrado
+
+Se procede a hacer pruebas chi cuadrado entre todas las posibles combinaciones de columnas categóricas que quedaron, y se guarda este resultado en un nuevo dataframe. 
+
+Esta prueba es útil para evaluar la independencia estadística entre pares de variables categóricas en un conjunto de datos.
+
+Ahora incia un proceso de selección de variables categóricas basado en la independencia estadística. Se empienzan a descartar todas las que son dependientes. 
+
+Se incia el proceso con todas aquellas que son dependientes a warehouse_Bogota (escogida aleatoriamente entre todas las variables)
+
+```{r, warning=FALSE}
+library(dplyr)
+
+p_values <- numeric(length = ncol(df_categoricals) - 1)
+names(p_values) <- setdiff(colnames(df_categoricals), "warehouse_Bogota")
+
+# Realizar las pruebas de chi-cuadrado
+for (col in names(p_values)) {
+  # Crear la tabla de contingencia para cada columna con 'warehouse_Bogota'
+  contingency_table <- table(df_categoricals$warehouse_Bogota, df_categoricals[[col]])
+  
+  # Realizar la prueba chi-cuadrado y almacenar el valor p
+  test_result <- chisq.test(contingency_table)
+  p_values[col] <- test_result$p.value
+}
+
+# Ahora, filtramos los nombres de las columnas con un valor p menor a 0.05
+significant_columns <- names(p_values)[p_values > 0.05]
+significant_columns <- significant_columns[!is.na(significant_columns)]
+significant_columns <- c(significant_columns, "warehouse_Bogota")
+
+significant_columns
+
+df_independent_variables <- subset(df_categoricals, select = significant_columns)
+```
+
+El resultado evidencia que 12 columnas son independientes a la columna warehouse_Bogota. Se procederá a utilizar otra columna aleatoria para verificar nuevamente independecia y descartar las dependientes. 
+
+Para este proceso se repite la prueba de chi-cuadrado
+
+Se toma la variable ‘sub_categoria_Ambientadores’, se eliminan las que son dependientes a esta y se repite el proceso hasta que todas las variables categóricas restantes, sean independientes
+
+```{r, warning=FALSE}
+p_values <- numeric(length = ncol(df_independent_variables) - 1)
+names(p_values) <- setdiff(colnames(df_independent_variables), "sub_categoria_Ambientadores")
+
+# Realizar las pruebas de chi-cuadrado
+for (col in names(p_values)) {
+  # Crear la tabla de contingencia para cada columna con 'sub_categoria_Ambientadores'
+  contingency_table <- table(df_independent_variables$sub_categoria_Ambientadores, df_independent_variables[[col]])
+  
+  # Realizar la prueba chi-cuadrado y almacenar el valor p
+  test_result <- chisq.test(contingency_table)
+  p_values[col] <- test_result$p.value
+}
+
+# Ahora, filtramos los nombres de las columnas con un valor p menor a 0.05
+significant_columns <- names(p_values)[p_values > 0.05]
+significant_columns <- significant_columns[!is.na(significant_columns)]
+significant_columns <- c(significant_columns, "sub_categoria_Ambientadores")
+
+significant_columns
+
+df_independent_variables <- subset(df_independent_variables, select = significant_columns)
+```
+
+Después de reptir el proceso, quedan 4 variables. Se procederá a repetir con la sub categoria Complementos y vitaminas
+
+```{r, warning=FALSE}
+p_values <- numeric(length = ncol(df_independent_variables) - 1)
+names(p_values) <- setdiff(colnames(df_independent_variables), "sub_categoria_Complementos.y.vitaminas")
+
+# Realizar las pruebas de chi-cuadrado
+for (col in names(p_values)) {
+  # Crear la tabla de contingencia para cada columna con 'sub_categoria_Complementos.y.vitaminas'
+  contingency_table <- table(df_independent_variables$sub_categoria_Complementos.y.vitaminas, df_independent_variables[[col]])
+  
+  # Realizar la prueba chi-cuadrado y almacenar el valor p
+  test_result <- chisq.test(contingency_table)
+  p_values[col] <- test_result$p.value
+}
+
+# Ahora, filtramos los nombres de las columnas con un valor p menor a 0.05
+significant_columns <- names(p_values)[p_values > 0.05]
+significant_columns <- significant_columns[!is.na(significant_columns)]
+significant_columns <- c(significant_columns, "sub_categoria_Complementos.y.vitaminas")
+
+significant_columns
+
+df_independent_variables <- subset(df_independent_variables, select = significant_columns)
+```
+
+En este ultimo caso las tres variables restantes son indpendientes. Ahora se procede a utilizar estas 3 variables para el modelo.
+
+## Variables Numéricas
+
+Para las variables numéricas se realiza una matrix de correlación
+```{r, fig.width=12, fig.height=10}
+library(reshape2)
+
+cor_matrix <- cor(df[numerical_cols], use = "complete.obs")
+
+# Transforma la matriz de correlación para la visualización
+cor_melted <- melt(cor_matrix)
+
+# Configura el tamaño de la fuente para los labels (ajusta según sea necesario)
+font_size <- 6
+
+ggplot(data = cor_melted, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = 0, limit = c(-1, 1), space = "Lab", 
+                       name="Correlation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1, size = font_size),
+        axis.text.y = element_text(size = font_size)) +
+  coord_fixed() +
+  labs(x = '', y = '') +
+  geom_text(aes(label = sprintf("%.2f", value)), size = 3, check_overlap = TRUE)
+```
+
+Se evidencia que existen variables con correlaciones altas. Estas se eliminarán con el Variance Inflation Factor. 
+
+Antes de este proceso, se deben revisar los datos faltantes. 
+
+### Datos faltantes
+
+```{r}
+columns_for_reduction = c(numerical_cols, significant_columns, 'is_churned')
+
+df_reduction = subset(df, select = columns_for_reduction)
+
+dim(df_reduction)
+```
+Se evidencia la presencia de valores faltantes en el dataframe. Se procederá a visualizarlos. 
+
+```{r}
+library(VIM)
+aggr_plot <- aggr(df_reduction, col=c('navyblue', 'red'), numbers=FALSE, sortVars=TRUE,
+                  cex.axis=0.4, gap=1, ylab=c("Histogram of missing data", "Pattern"))
+```
+
+Se remueven aquellas columnas que tienen 40% o más de valores faltantes:
+
+```{r}
+porcentaje_nulos <- sapply(df_reduction, function(x) mean(is.na(x))) * 100
+df_filtrado <- df_reduction[, porcentaje_nulos < 40]
+```
+
+Y ahora se imputan los datos faltantes utilizando el método de imputación por emparejamiento predictivo medio
+
+```{r}
+names(df_filtrado)
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, results='hide'}
+library(mice)
+porcentaje_nulos <- sapply(df_reduction, function(x) mean(is.na(x))) * 100
+df_filtrado <- df_reduction[, porcentaje_nulos < 40]
+
+imp_rf <- mice(df_filtrado, method = 'rf', m = 5, maxit = 50, seed = 500)
+
+imp_df <-- complete(imp_rf)
+
+df_filtrado <- imp_df
+
+# Conteo de valores nulos para verificar
+colSums(is.na(df_filtrado))
+```
+
+
+con lo cual restan 25 columnas
+
+#### Eliminar multicolinealidad con Variance Inflation Factor (VIF)
+
+Recordemos que:
+
+- Un VIF ≥ 5 indica alta multicolinealidad entre la correspondiente variable independiente y las demás variables.
+
+- Recomendación: Eliminar una columna a la vez. Aquella con el máximo VIF ≥ 5. Luego, para el nuevo dataframe, calcular nuevamente VIF e identificar nuevas columnas con VIF ≥ 5 máximo, y así sucesivamente hasta obtener solo valores de VIF < 5.
+
+- Según corresponda, variables categóricas deben previamente codificarse usando por ejemplo OneHotEncoder().
+
+```{r, message=FALSE, warning=FALSE}
+library(car)
+
+modelo <- lm(is_churned ~ ., data = df_filtrado)
+
+# Calcular VIF
+vif_valores <- vif(modelo)
+
+# Crear un dataframe para mostrar los nombres de las variables y sus VIFs
+vif_df <- data.frame(VIF = vif_valores)
+
+# Imprimir el dataframe
+kable(vif_df, caption = "VIF values")
+```
+
+En este caso se eliminan las columnas con un VIF mayor que 5, eliminando la de mayor VIF en cada iteración. 
+```{r}
+# Definir el umbral para el VIF
+vif_threshold <- 5
+
+# Crear una copia del dataframe original para no modificarlo directamente
+df_reduction_copy <- df_filtrado
+
+# Bucle para calcular VIF y eliminar la variable con el mayor VIF
+while(TRUE) {
+  # Ajustar un modelo de regresión lineal usando 'is_churned' como la variable de respuesta
+  formula <- as.formula(paste("is_churned ~", paste(setdiff(names(df_reduction_copy), "is_churned"), collapse="+")))
+  modelo <- lm(formula, data=df_reduction_copy)
+  
+  # Calcular VIF
+  vif_valores <- vif(modelo)
+  
+  # Obtener el máximo VIF y el nombre de la variable correspondiente
+  max_vif <- max(vif_valores)
+  if (max_vif < vif_threshold) {
+    break
+  }
+  variable_max_vif <- names(vif_valores)[which.max(vif_valores)]
+  
+  # Imprimir la variable que se está eliminando y su VIF
+  cat(sprintf("Dropping '%s' with VIF: %f\n", variable_max_vif, max_vif))
+  
+  # Eliminar la variable con el VIF más alto
+  df_reduction_copy <- df_reduction_copy[, !(names(df_reduction_copy) %in% variable_max_vif)]
+}
+```
+
+Se procede a verificar los resultados después de eliminar las variables alta multicolinealidad
+```{r, message=FALSE, warning=FALSE}
+modelo <- lm(is_churned ~ ., data = df_reduction_copy)
+
+# Calcular VIF
+vif_valores <- vif(modelo)
+
+# Crear un dataframe para mostrar los nombres de las variables y sus VIFs
+vif_df <- data.frame(VIF = vif_valores)
+
+# Imprimir el dataframe
+kable(vif_df, caption = "VIF values")
+```
+
+Se evidencia que quedan 17 variables y todas tienen VIF menor a 5. 
+Este dataframe, agregando la columna de la variable de interés, será utilizado para entregar el modelo de clasificación.
+
+```{r}
+df_final <- df_reduction_copy
+
+library(DT)
+datatable(tail(df_final, 10), options = list(scrollX = TRUE))
+```
+
+# Descripción variable objetivo
+
+```{r, message=FALSE, warning=FALSE}
+# Reemplazar 0 y 1 en la columna 'is_churned' con etiquetas
+df_reduction_copy$is_churned <- factor(df_reduction_copy$is_churned, levels = c(0, 1), labels = c("not churned", "churned"))
+
+# Crear el gráfico de conteo
+ggplot(data = df_reduction_copy, aes(x = is_churned)) +
+  geom_bar(fill = "blue") +
+  labs(title = "Count of churned and non churned customers",
+       x = "",
+       y = "Count")
+```
+
+# Descripción variables numericas vs is_churned
+
+```{r, message=FALSE, warning=FALSE}
+numerical_cols <- setdiff(names(df_reduction_copy), c('warehouse_Bogota', 'sub_categoria_Ambientadores', 'sub_categoria_Complementos.y.vitaminas', 'is_churned'))
+
+# Crear un boxplot para cada columna numérica
+for (col in numerical_cols) {
+  p <- ggplot(df_reduction_copy, aes_string(x = "is_churned", y = col)) +
+    geom_boxplot() +  # Elimina outliers
+    coord_flip() +  # Hace el boxplot horizontal
+    labs(title = paste("Boxplot of", col, "by is_churned"),
+         y = col,
+         x = "is_churned")
+  print(p)
+}
+```
+
+# variables categoricas vs is_churned
+
+```{r, message=FALSE, warning=FALSE}
+
+df_categoricals_final <- df[, c(significant_columns, 'is_churned')]
+
+df_categoricals_final$is_churned <- factor(df_categoricals_final$is_churned, levels = c(0, 1), labels = c("not churned", "churned"))
+
+# Crear un gráfico de barras apiladas para cada variable categórica
+for (col in significant_columns) {
+  # Calcular los porcentajes
+  df_percent <- df_categoricals_final %>%
+    group_by_at(col) %>%
+    count(is_churned) %>%
+    group_by_at(col) %>%
+    mutate(perc = n / sum(n) * 100)
+
+  # Crear el gráfico
+  p <- ggplot(df_percent, aes_string(x = col, y = "perc", fill = "is_churned")) +
+    geom_bar(stat = "identity", position = "fill") +
+    labs(title = paste("Porcentaje de is_churned por", col),
+         x = col,
+         y = "Porcentaje (%)") +
+    scale_y_continuous(labels = scales::percent)
+
+  print(p)
+}
+```
+
+# Entrenando modelos de ML
+
+## Train test split
+
+se procede a hacer un train_test split con un 20% de datos como test
+
+```{r, message=FALSE, warning=FALSE}
+library(caTools)
+library(pROC)
+
+set.seed(123)  # for reproducibility
+split <- sample.split(df_final$is_churned, SplitRatio = 0.8)
+train_set <- subset(df_final, split == TRUE)
+test_set <- subset(df_final, split == FALSE)
+```
+
+ahora se crea una funcion para evaluar los modelos con 5 fold cross validation
+
+```{r}
+library(caret)
+library(xgboost)
+
+train_and_evaluate <- function(model, data, target_column) {
+  # Convert the target variable to a factor if it's not already
+  data[[target_column]] <- as.factor(data[[target_column]])
+  
+  # Renaming factor levels to be valid R variable names
+  levels(data[[target_column]]) <- make.names(levels(data[[target_column]]))
+  
+  # Setting up cross-validation
+  control <- trainControl(method = "cv", number = 5, summaryFunction = twoClassSummary, classProbs = TRUE)
+  
+  # Creating the formula
+  formula <- as.formula(paste(target_column, "~ ."))
+
+  # Fitting the model
+  fit <- train(formula, data = data, method = model, trControl = control, metric = "F1")
+  
+  # Returning the results
+  return(fit$resample)
+}
+```
+
+```{r}
+# List of models to train
+models_to_train <- c("glm")
+
+# Assuming df_final is your dataframe and 'is_churned' is the target variable
+target_column <- "is_churned"
+
+# Storing results
+results <- list()
+
+# Training each model and storing results
+for (model in models_to_train) {
+  results[[model]] <- train_and_evaluate(model, df_final, target_column)
+}
+
+# Plotting the results
+par(mfrow=c(2,2))
+for (i in 1:length(models_to_train)) {
+  model <- models_to_train[i]
+  boxplot(results[[model]]$F1, main = model)
+}
+```
+
