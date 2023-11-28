@@ -1,0 +1,4 @@
+# Execute the following commands to Dockerize the Dash application
+
+docker build -t churn_prediction .
+docker run -h localhost -p 9002:9000 -d --name churn_prediction churn_prediction

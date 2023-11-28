@@ -2,7 +2,9 @@
 title: "EDA_Proyecto_Final"
 author: "Martin Alvarez, Estefany Villanueva"
 date: "2023-11-14"
-output: html_document
+output: 
+  html_document:
+    rmdformats::readthedown
 ---
 
 ```{r, message=FALSE, warning=FALSE}
@@ -229,7 +231,7 @@ dim(df_reduction)
 ```
 Se evidencia la presencia de valores faltantes en el dataframe. Se procederá a visualizarlos. 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(VIM)
 aggr_plot <- aggr(df_reduction, col=c('navyblue', 'red'), numbers=FALSE, sortVars=TRUE,
                   cex.axis=0.4, gap=1, ylab=c("Histogram of missing data", "Pattern"))
@@ -254,16 +256,30 @@ library(mice)
 porcentaje_nulos <- sapply(df_reduction, function(x) mean(is.na(x))) * 100
 df_filtrado <- df_reduction[, porcentaje_nulos < 40]
 
-imp_rf <- mice(df_filtrado, method = 'rf', m = 5, maxit = 50, seed = 500)
+imp <- mice(df_filtrado[, (names(df_filtrado) %in% c("orders_count_delta_1m", "gmv_delta_1m", "distinct_skus_delta_1m", "orders_count_delta_2m", "gmv_delta_2m", "distinct_skus_delta_2m", "mean_order_lapse", "antiquity_days",
+"canceled_orders", "visits_count_3m", "gmv_3m", "AOV_3m", "distinct_sku_3m", "order_count_historic"))], m=5, maxit=50, method ='pmm', seed=500, printFlag = FALSE)
 
-imp_df <-- complete(imp_rf)
+imp_df <-- complete(imp)
 
-df_filtrado <- imp_df
+df_filtrado$orders_count_delta_1m <- imp_df$orders_count_delta_1m
+df_filtrado$gmv_delta_1m <- imp_df$gmv_delta_1m
+df_filtrado$distinct_skus_delta_1m <- imp_df$distinct_skus_delta_1m
+df_filtrado$orders_count_delta_2m <- imp_df$orders_count_delta_2m
+df_filtrado$gmv_delta_2m <- imp_df$gmv_delta_2m
+df_filtrado$distinct_skus_delta_2m <- imp_df$distinct_skus_delta_2m
+df_filtrado$mean_order_lapse <- imp_df$mean_order_lapse
+
+# se imputa con ceros algunas colummnas que por errores sistemáticos están null
+df_filtrado <- df_filtrado %>% 
+  mutate(
+    warehouse_Bogota = coalesce(warehouse_Bogota, 0),
+    sub_categoria_Ambientadores = coalesce(sub_categoria_Ambientadores, 0),
+    sub_categoria_Complementos.y.vitaminas = coalesce(sub_categoria_Complementos.y.vitaminas, 0)
+  )
 
 # Conteo de valores nulos para verificar
 colSums(is.na(df_filtrado))
 ```
-
 
 con lo cual restan 25 columnas
 
@@ -414,63 +430,330 @@ for (col in significant_columns) {
 
 se procede a hacer un train_test split con un 20% de datos como test
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+names(df_final)
+```
+
+
+```{r message=FALSE, warning=FALSE}
 library(caTools)
 library(pROC)
+
+df_final$warehouse_Bogota <- factor(df_final$warehouse_Bogota)
+df_final$sub_categoria_Ambientadores <- factor(df_final$sub_categoria_Ambientadores)
+df_final$sub_categoria_Complementos.y.vitaminas <- factor(df_final$sub_categoria_Complementos.y.vitaminas)
+df_final$is_churned <- factor(df_final$is_churned)
 
 set.seed(123)  # for reproducibility
 split <- sample.split(df_final$is_churned, SplitRatio = 0.8)
 train_set <- subset(df_final, split == TRUE)
 test_set <- subset(df_final, split == FALSE)
+
+# escalando los datos
+
+# For train_set
+numeric_columns <- sapply(train_set, is.numeric)
+train_set[numeric_columns] <- scale(train_set[numeric_columns])
+
+# For test_set
+numeric_columns <- sapply(test_set, is.numeric)
+test_set[numeric_columns] <- scale(test_set[numeric_columns])
 ```
 
-ahora se crea una funcion para evaluar los modelos con 5 fold cross validation
+```{r}
+write.csv(test_set, "test_set.csv", row.names = FALSE)
+```
 
 ```{r}
-library(caret)
+test <- read.csv("train_set.csv")
+test$warehouse_Bogota <- factor(test$warehouse_Bogota)
+test$sub_categoria_Ambientadores <- factor(test$sub_categoria_Ambientadores)
+test$sub_categoria_Complementos.y.vitaminas <- factor(test$sub_categoria_Complementos.y.vitaminas)
+test$is_churned <- factor(test$is_churned)
+```
+
+
+## Regresión Logística
+
+```{r message=FALSE, warning=FALSE}
+# Training a logistic regression model
+model <- glm(is_churned ~ ., data = train_set, family = "binomial")
+
+saveRDS(model, file = "logistic_regression.rds")
+
+# Making predictions on the test set
+predictions <- predict(model, newdata = test_set, type = "response")
+predicted_class <- ifelse(predictions > 0.5, 1, 0)
+
+# Creating a confusion matrix
+confusion_matrix <- table(test_set$is_churned, predicted_class)
+
+# Calculating precision, recall, and accuracy
+precision <- confusion_matrix[2,2] / sum(confusion_matrix[,2])
+recall <- confusion_matrix[2,2] / sum(confusion_matrix[2,])
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Calculating F1 score
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+# Printing metrics
+print(paste("Precision:", precision))
+print(paste("Recall:", recall))
+print(paste("Accuracy:", accuracy))
+print(paste("F1 Score:", f1_score))
+
+# Calculating AUC
+roc_curve <- roc(response = test_set$is_churned, predictor = predictions)
+auc_value <- auc(roc_curve)
+
+# Printing AUC
+print(paste("AUC:", auc_value))
+
+# Plotting the ROC curve
+plot(roc_curve, main = "ROC Curve")
+```
+
+```{r}
+confusion_df <- as.data.frame(melt(confusion_matrix))
+
+# Rename columns for clarity
+colnames(confusion_df) <- c("Reference", "Prediction", "Count")
+
+# Plot using ggplot2
+ggplot(confusion_df, aes(x = Reference, y = Prediction, fill = Count)) +
+  geom_tile() +
+  geom_text(aes(label = Count), vjust = 1) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  theme_minimal() +
+  labs(title = "Confusion Matrix", x = "Actual Class", y = "Predicted Class", fill = "Count")
+```
+
+
+## random forest
+
+```{r message=FALSE, warning=FALSE}
+# Ensure the randomForest package is installed and loaded
+library(randomForest)
+
+# Training a Random Forest model
+model <- randomForest(is_churned ~ ., data = train_set)
+
+# Save the model
+saveRDS(model, file = "random_forest_model.rds")
+
+# Making predictions on the test set
+predictions_prob <- predict(model, newdata = test_set, type = 'prob')
+
+prob_positive_class <- predictions_prob[, "1"]
+predicted_class <- ifelse(prob_positive_class > 0.5, 1, 0)
+
+# Creating a confusion matrix
+confusion_matrix <- table(test_set$is_churned, predicted_class)
+
+# Calculating precision, recall, and accuracy
+precision <- confusion_matrix[2,2] / sum(confusion_matrix[,2])
+recall <- confusion_matrix[2,2] / sum(confusion_matrix[2,])
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Calculating F1 score
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+# Printing metrics
+print(paste("Precision:", precision))
+print(paste("Recall:", recall))
+print(paste("Accuracy:", accuracy))
+print(paste("F1 Score:", f1_score))
+
+# Calculating and printing AUC
+roc_curve <- roc(response = test_set$is_churned, predictor = prob_positive_class)
+auc_value <- auc(roc_curve)
+print(paste("AUC:", auc_value))
+
+# Plotting the ROC curve
+plot(roc_curve, main = "ROC Curve")
+```
+
+## XGBoost
+
+```{r message=FALSE, warning=FALSE}
+# Ensure the xgboost package is installed and loaded
 library(xgboost)
 
-train_and_evaluate <- function(model, data, target_column) {
-  # Convert the target variable to a factor if it's not already
-  data[[target_column]] <- as.factor(data[[target_column]])
-  
-  # Renaming factor levels to be valid R variable names
-  levels(data[[target_column]]) <- make.names(levels(data[[target_column]]))
-  
-  # Setting up cross-validation
-  control <- trainControl(method = "cv", number = 5, summaryFunction = twoClassSummary, classProbs = TRUE)
-  
-  # Creating the formula
-  formula <- as.formula(paste(target_column, "~ ."))
-
-  # Fitting the model
-  fit <- train(formula, data = data, method = model, trControl = control, metric = "F1")
-  
-  # Returning the results
-  return(fit$resample)
+# Convert factors to numeric
+num_conversion <- function(df) {
+  for (col in names(df)) {
+    if (is.factor(df[[col]])) {
+      df[[col]] <- as.numeric(as.character(df[[col]]))
+    }
+  }
+  return(df)
 }
+
+train_set_num <- num_conversion(train_set)
+test_set_num <- num_conversion(test_set)
+
+# Now convert to matrix
+train_data <- as.matrix(train_set_num[, -which(names(train_set_num) == "is_churned")])
+train_label <- train_set_num$is_churned
+
+test_data <- as.matrix(test_set_num[, -which(names(test_set_num) == "is_churned")])
+test_label <- test_set_num$is_churned
+
+# Proceed with XGBoost training as before
+dtrain <- xgb.DMatrix(data = train_data, label = train_label)
+dtest <- xgb.DMatrix(data = test_data, label = test_label)
+
+# Parameters for XGBoost
+params <- list(
+  objective = "binary:logistic",
+  eval_metric = "logloss"
+)
+
+# Training XGBoost model
+model <- xgboost(params = params, data = dtrain, nrounds = 100)
+
+# Save the model
+saveRDS(model, file = "xgboost_model.rds")
+
+# Making predictions on the test set
+predictions <- predict(model, dtest)
+predicted_class <- ifelse(predictions > 0.5, 1, 0)
+
+# Creating a confusion matrix
+confusion_matrix <- table(test_label, predicted_class)
+
+# Calculating precision, recall, and accuracy
+precision <- confusion_matrix[2,2] / sum(confusion_matrix[,2])
+recall <- confusion_matrix[2,2] / sum(confusion_matrix[2,])
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Calculating F1 score
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+# Printing metrics
+print(paste("Precision:", precision))
+print(paste("Recall:", recall))
+print(paste("Accuracy:", accuracy))
+print(paste("F1 Score:", f1_score))
+
+# Calculating AUC
+roc_curve <- roc(response = test_label, predictor = predictions)
+auc_value <- auc(roc_curve)
+print(paste("AUC:", auc_value))
+
+# Plotting the ROC curve
+plot(roc_curve, main = "ROC Curve")
 ```
 
-```{r}
-# List of models to train
-models_to_train <- c("glm")
 
-# Assuming df_final is your dataframe and 'is_churned' is the target variable
-target_column <- "is_churned"
+## loading the models for testing
 
-# Storing results
-results <- list()
+### testing logreg file
 
-# Training each model and storing results
-for (model in models_to_train) {
-  results[[model]] <- train_and_evaluate(model, df_final, target_column)
-}
+```{r message=FALSE, warning=FALSE}
+logreg <- readRDS(file = "logistic_regression.rds")
 
-# Plotting the results
-par(mfrow=c(2,2))
-for (i in 1:length(models_to_train)) {
-  model <- models_to_train[i]
-  boxplot(results[[model]]$F1, main = model)
-}
+# Making predictions on the test set
+predictions <- predict(logreg, newdata = test_set, type = "response")
+predicted_class <- ifelse(predictions > 0.5, 1, 0)
+
+# Creating a confusion matrix
+confusion_matrix <- table(test_set$is_churned, predicted_class)
+
+# Calculating precision, recall, and accuracy
+precision <- confusion_matrix[2,2] / sum(confusion_matrix[,2])
+recall <- confusion_matrix[2,2] / sum(confusion_matrix[2,])
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Calculating F1 score
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+# Printing metrics
+print(paste("Precision:", precision))
+print(paste("Recall:", recall))
+print(paste("Accuracy:", accuracy))
+print(paste("F1 Score:", f1_score))
+
+# Calculating AUC
+roc_curve <- roc(response = test_set$is_churned, predictor = predictions)
+auc_value <- auc(roc_curve)
+
+# Printing AUC
+print(paste("AUC:", auc_value))
+
+# Plotting the ROC curve
+plot(roc_curve, main = "ROC Curve")
 ```
+
+### testing random forest file
+
+```{r message=FALSE, warning=FALSE}
+rand_forest <- readRDS(file = "random_forest_model.rds")
+
+# Making predictions on the test set
+predictions_prob <- predict(rand_forest, newdata = test_set, type = 'prob')
+
+prob_positive_class <- predictions_prob[, "1"]
+predicted_class <- ifelse(prob_positive_class > 0.5, 1, 0)
+
+# Creating a confusion matrix
+confusion_matrix <- table(test_set$is_churned, predicted_class)
+
+# Calculating precision, recall, and accuracy
+precision <- confusion_matrix[2,2] / sum(confusion_matrix[,2])
+recall <- confusion_matrix[2,2] / sum(confusion_matrix[2,])
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Calculating F1 score
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+# Printing metrics
+print(paste("Precision:", precision))
+print(paste("Recall:", recall))
+print(paste("Accuracy:", accuracy))
+print(paste("F1 Score:", f1_score))
+
+# Calculating and printing AUC
+roc_curve <- roc(response = test_set$is_churned, predictor = prob_positive_class)
+auc_value <- auc(roc_curve)
+print(paste("AUC:", auc_value))
+
+# Plotting the ROC curve
+plot(roc_curve, main = "ROC Curve")
+```
+### testing XGBoost file
+
+```{r message=FALSE, warning=FALSE}
+xgboost_model <- readRDS(file = "xgboost_model.rds")
+
+# Making predictions on the test set
+predictions <- predict(xgboost_model, dtest)
+predicted_class <- ifelse(predictions > 0.5, 1, 0)
+
+# Creating a confusion matrix
+confusion_matrix <- table(test_label, predicted_class)
+
+# Calculating precision, recall, and accuracy
+precision <- confusion_matrix[2,2] / sum(confusion_matrix[,2])
+recall <- confusion_matrix[2,2] / sum(confusion_matrix[2,])
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Calculating F1 score
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+# Printing metrics
+print(paste("Precision:", precision))
+print(paste("Recall:", recall))
+print(paste("Accuracy:", accuracy))
+print(paste("F1 Score:", f1_score))
+
+# Calculating AUC
+roc_curve <- roc(response = test_label, predictor = predictions)
+auc_value <- auc(roc_curve)
+print(paste("AUC:", auc_value))
+
+# Plotting the ROC curve
+plot(roc_curve, main = "ROC Curve")
+```
+
 

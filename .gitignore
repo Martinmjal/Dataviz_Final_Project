@@ -1,0 +1,14 @@
+# Ignore all CSV files
+*.csv
+
+# If you want to include CSV files from other directories and only exclude them from specific ones, you can do this:
+# Exclude CSV files only from the 'Project In R' and 'Project in Python' directories
+Project In R/*.csv
+Project in Python/*.csv
+
+# Exclude CSV files from the 'docs' directory if they exist there
+docs/*.csv
+
+# Exclude CSV files from any subdirectories within 'Project In R' and 'Project in Python'
+Project In R/**/*.csv
+Project in Python/**/*.csv

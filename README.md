@@ -1,5 +1,19 @@
-# Visualización de Datos - Proyecto Final
+# Final Project <> Data Visualization
 
-Página web para entrega del proyecto final de visualización de datos. Modelo de machine learning para clasificación de clientes churn, entiéndase un cliente churn como un cliente que está muy próximo a romper relación comercial con mi compañía.
+This repo serves as the hosting platform for the final project of the Data Visualization Course within the Master's in Applied Statistics program at Uninorte, Colombia. 
 
-**Se utilizaron Datos anonimizados para el desarrollo de este proyecto**
+In this project, **I trained a Machine Learning Model to predict customer churn**, a churned customer is defined as a customer on the verge of terminating their commercial relationship with your company.
+
+Subsequently, I developed **two dashboards to showcase the model's performance** and provide insights through data exploration.
+
+**Anonymized Data was used for these project**
+
+Dashboard in python:
+Please download the **Project in Python** compressed file and follow the README commands to create the docker image of the dashboard and run it locally (you must have docker desktop installed)
+
+Deployment in R:
+[Churn Prediction App in R (Shiny)](https://martinalvarez.shinyapps.io/Project_In_R/)
+
+Model Training and Data Exploration:
+[EDA](https://martinmjal.github.io/Dataviz_Final_Project/churn_prediction_EDA.html)
+[Machine Learning Model Training](https://martinmjal.github.io/Dataviz_Final_Project/churn_prediction_model_training.html)

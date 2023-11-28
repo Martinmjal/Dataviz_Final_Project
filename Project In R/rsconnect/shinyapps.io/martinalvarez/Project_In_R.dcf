@@ -1,0 +1,13 @@
+name: Project_In_R
+title: Project_In_R
+username: martinalvarez
+account: martinalvarez
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10648083
+bundleId: 7978008
+url: https://martinalvarez.shinyapps.io/Project_In_R/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Churn_prediction_EDA_inR.html|Churn_prediction_EDA_inR.Rmd|churn_prediction_features.csv
