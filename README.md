@@ -12,8 +12,8 @@ Dashboard in python:
 - Please download the **Project in Python** compressed file and follow the README commands to create the docker image of the dashboard and run it locally (you must have docker desktop installed)
 
 Deployment in R:
-- <a href="https://martinalvarez.shinyapps.io/Project_In_R/" target="_blank">Churn Prediction App in R (Shiny)</a>
+- [Churn Prediction App in R (Shiny)](https://martinalvarez.shinyapps.io/Project_In_R/)
 
 Model Training and Data Exploration:
-- <a href="https://martinmjal.github.io/Dataviz_Final_Project/churn_prediction_EDA.html" target="_blank">EDA</a>
-- <a href="https://martinmjal.github.io/Dataviz_Final_Project/churn_prediction_model_training.html" target="_blank">Machine Learning Model Training</a>
+- [EDA](https://martinmjal.github.io/Dataviz_Final_Project/churn_prediction_EDA.html)
+- [Machine Learning Model Training](https://martinmjal.github.io/Dataviz_Final_Project/churn_prediction_model_training.html)
